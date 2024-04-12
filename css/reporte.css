@@ -1,0 +1,17 @@
+/* Estilo personalizado para el sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100; /* Asegura que el sidebar esté encima del contenido principal */
+    padding: 48px 0 0; /* Espaciado superior para evitar la superposición del navbar */
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1); /* Sombra en el borde derecho */
+}
+
+/* Ajusta el ancho del sidebar */
+@media (min-width: 768px) {
+    .sidebar {
+        width: 227px;
+    }
+}
