@@ -1,3 +1,11 @@
+*{
+    font-family: "DM Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    /* color: #000000; */
+}
+
 /* Estilo personalizado para el sidebar */
 .sidebar {
     position: fixed;
@@ -14,4 +22,18 @@
     .sidebar {
         width: 227px;
     }
+}
+
+.navbarBgColor{
+    background-color: #8EE3F5;
+}
+
+.nav-item {
+    padding: 5px;
+    margin-bottom: 5px;
+    transition: background-color 0.3s; /* Agrega una transición suave al cambio de color */
+}
+
+.nav-item:hover {
+    background-color: #70CAD1; /* Cambia el color de fondo cuando se pasa el mouse sobre el elemento */
 }
