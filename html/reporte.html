@@ -52,7 +52,7 @@
                 <div class="position-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#">
+                            <a class="nav-link active" href="../index.html">
                                 Inicio
                             </a>
                         </li>
@@ -94,27 +94,59 @@
                     <div class="col-12">
                         <!-- Contenido principal aquí-->
                         <div class="row">
-                            <div class="d-flex gap-2 justify-content-center py-5">
-                                <button class="btn btn-info px-3" type="button">2023</button>
-                                <button class="btn btn-info px-3" type="button">Enero</button>
-                                <button class="btn btn-info px-3" type="button">Febrero</button>
-                                <button class="btn btn-info px-3" type="button">Marzo</button>
-                                <button class="btn btn-info px-3" type="button">Abril</button>
-                                <button class="btn btn-info px-3" type="button">Mayo</button>
-                                <button class="btn btn-info px-3" type="button">Junio</button>
-                                <button class="btn btn-info px-3" type="button">Julio</button>
-                                <button class="btn btn-info px-3" type="button">Agosto</button>
-                                <button class="btn btn-info px-3" type="button">Septiembre</button>
-                                <button class="btn btn-info px-3" type="button">Octubre</button>
-                                <button class="btn btn-info px-3" type="button">Noviembre</button>
-                                <button class="btn btn-info px-3" type="button">Diciembre</button>
-                              </div>
+                            <div class="col-md-4 col-12 mb-2 col-lg-2">
+                                <button class="btn btn-info px-3 w-100" type="button">2023</button>
+                            </div>
+                            <div class="col-md-4 col-12 mb-2 col-lg-2">
+                                <button class="btn btn-info px-3 w-100" type="button">Enero</button>
+                            </div>
+                            <div class="col-md-4 col-12 mb-2 col-lg-2">
+                                <button class="btn btn-info px-3 w-100" type="button">Febrero</button>
+                            </div>
+                            <div class="col-md-4 col-12 mb-2 col-lg-2">
+                                <button class="btn btn-info px-3 w-100" type="button">Marzo</button>
+                            </div>
+                            <div class="col-md-4 col-12 mb-2 col-lg-2">
+                                <button class="btn btn-info px-3 w-100" type="button">Abril</button>
+                            </div>
+                            <div class="col-md-4 col-12 mb-2 col-lg-2">
+                                <button class="btn btn-info px-3 w-100" type="button">Mayo</button>
+                            </div>
+                            <div class="col-md-4 col-12 mb-2 col-lg-2">
+                                <button class="btn btn-info px-3 w-100" type="button">Junio</button>
+                            </div>
+                            <div class="col-md-4 col-12 mb-2 col-lg-2">
+                                <button class="btn btn-info px-3 w-100" type="button">Julio</button>
+                            </div>
+                            <div class="col-md-4 col-12 mb-2 col-lg-2">
+                                <button class="btn btn-info px-3 w-100" type="button">Agosto</button>
+                            </div>
+                            <div class="col-md-4 col-12 mb-2 col-lg-2">
+                                <button class="btn btn-info px-3 w-100" type="button">Septiembre</button>
+                            </div>
+                            <div class="col-md-4 col-12 mb-2 col-lg-2">
+                                <button class="btn btn-info px-3 w-100" type="button">Octubre</button>
+                            </div>
+                            <div class="col-md-4 col-12 mb-2 col-lg-2">
+                                <button class="btn btn-info px-3 w-100" type="button">Noviembre</button>
+                            </div>
+                            <div class="col-md-4 col-12 mb-2 col-lg-2">
+                                <button class="btn btn-info px-3 w-100" type="button">Diciembre</button>
+                            </div>
+                            <!-- <div class="d-flex gap-2 justify-content-center py-5">
+                              </div> -->
                         </div>
-                        <div class="row justify-content-center">
-                            <canvas id="lineChart" width="400" height="200"></canvas>
+                        <br>
+                        <div class="container-fluid">
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <canvas id="lineChart" height="200"></canvas>
+                                </div>
+                            </div>
                         </div>
+                        <br>
                         <div class="row">
-                            <div class="col">
+                            <div class="col-sm">
                                 <div class="mb-3">
                                     <div class="table-responsive">
                                         <table class="table">
@@ -150,7 +182,7 @@
                                     <canvas id="barChart" width="400" height="200"></canvas>
                                 </div>
                             </div>
-                            <div class="col">
+                            <div class="col-sm">
                                 <div class="row align-items-center" style="min-height: 50vh;">
                                     <div class="table-responsive">
                                         <table class="table">
@@ -192,6 +224,7 @@
                                 </div>
                             </div>
                         </div>
+                        <br>
                         <div class="row">
                             <div class="col">
                                 <div class="table-responsive">
@@ -224,9 +257,10 @@
                                 <canvas id="pieChart" width="400" height="200"></canvas>
                             </div>
                         </div>
+                        <br>
                         <div class="row">
                             <div class="col">
-                                <canvas id="pieChart2" width="400" height="200"></canvas>
+                                <canvas id="doughnutChart" width="400" height="200"></canvas>
                             </div>
                             <div class="col">
                                 <div class="table-responsive">
@@ -263,6 +297,7 @@
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <!-- Chart js-->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-3d"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/reporte.js"></script>
 </body>
