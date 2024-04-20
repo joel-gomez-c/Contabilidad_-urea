@@ -38,6 +38,8 @@
     background-color: #70CAD1; /* Cambia el color de fondo cuando se pasa el mouse sobre el elemento */
 }
 
+.dropdown-toggle { outline: 0; }
+
 /* .body{
     background-color: #A8E0FF;
 } */
