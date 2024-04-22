@@ -1,3 +1,9 @@
+let nombre = "";
+let enlace = "";
+let user_name = document.getElementById("user_name");
+let logOut = document.getElementById("logOut");
+//let texto1 = document.getElementById("texto1");
+
 var ctxLine = document.getElementById('lineChart').getContext('2d');
 var lineChart = new Chart(ctxLine, {
     type: 'line',
@@ -125,25 +131,60 @@ var doughnutChart = new Chart(ctxDoughnut, {
 });
 
 // URL del archivo CSV
-const url = '../src/extra/data.csv';
+// const url = '../src/extra/data.csv';
 
 // Función para cargar y procesar el archivo CSV
-fetch(url)
-  .then(response => response.text())
-  .then(data => {
-    // Dividir el archivo CSV en filas
-    const rows = data.split('\n');
-    // Procesar cada fila (excepto la primera, que contiene los nombres de las columnas)
-    for (let i = 1; i < rows.length; i++) {
-      const row = rows[i].split(',');
-      const nombre = row[0];
-      const usuario = row[1];
-      const contraseña = row[2];
-      const enlace = row[3];
-      // Procesar los datos como desees (por ejemplo, mostrarlos en la consola)
-      console.log(`Nombre: ${nombre}, Usuario: ${usuario}, Contraseña: ${contraseña}, Enlace: ${enlace}`);
-    }
-  })
-  .catch(error => {
-    console.error('Error al cargar el archivo CSV:', error);
-  });
+// fetch(url)
+//   .then(response => response.text())
+//   .then(data => {
+//     // Dividir el archivo CSV en filas
+//     const rows = data.split('\n');
+//     // Procesar cada fila (excepto la primera, que contiene los nombres de las columnas)
+//     for (let i = 1; i < rows.length; i++) {
+//       const row = rows[i].split(',');
+//       const nombre = row[0];
+//       const usuario = row[1];
+//       const contraseña = row[2];
+//       const enlace = row[3];
+//       // Procesar los datos como desees (por ejemplo, mostrarlos en la consola)
+//       console.log(`Nombre: ${nombre}, Usuario: ${usuario}, Contraseña: ${contraseña}, Enlace: ${enlace}`);
+//     }
+//   })
+//   .catch(error => {
+//     console.error('Error al cargar el archivo CSV:', error);
+//   });
+
+window.addEventListener("load", function(event){
+    event.preventDefault();
+    if(this.localStorage.getItem("nombre")!=null){
+        nombre = String(this.localStorage.getItem("nombre"));
+        enlace = String(this.localStorage.getItem("enlace"));
+
+        // let fecha = new Date();
+        // let hora = fecha.getHours();
+        // console.log(hora);
+        // if(hora>=0 && hora<12){
+        //     //console.log("Buenos días");
+        //     texto1.innerText = `Buenos días ${nombre}`;
+        // }else if(hora>=12 && hora<20){
+        //     //console.log("Buenas tardes");
+        //     texto1.innerText = `Buenas tardes ${nombre}`;
+        // }else{
+        //     //console.log("Buenas noches");
+        //     texto1.innerText = `Buenas noches ${nombre}`;
+        // }
+
+        user_name.innerText = `${nombre}`;
+
+    }//if != null
+
+});//window load
+
+logOut.addEventListener("click", function(event) {
+    event.preventDefault();
+    localStorage.removeItem("nombre");
+    localStorage.removeItem("enlace");
+    // localStorage.removeItem("usuario");
+    // localStorage.removeItem("contraseña");
+    window.location.href = "../html/login.html";
+});

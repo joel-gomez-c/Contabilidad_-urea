@@ -25,8 +25,8 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         if((username.value == usuario) && (password.value == contraseña)){
             // console.log(`Nombre: ${nombre}, Usuario: ${usuario}, Contraseña: ${contraseña}, Enlace: ${enlace}`);
             localStorage.setItem("nombre", nombre);
-            localStorage.setItem("usuario", usuario);
-            localStorage.setItem("contraseña", contraseña);
+            //localStorage.setItem("usuario", usuario);
+            //localStorage.setItem("contraseña", contraseña);
             localStorage.setItem("enlace", enlace);
             cardExists = true;
             break;
