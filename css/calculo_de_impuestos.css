@@ -1,0 +1,45 @@
+*{
+    font-family: "DM Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    /* color: #000000; */
+}
+
+/* Estilo personalizado para el sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100; /* Asegura que el sidebar esté encima del contenido principal */
+    padding: 48px 0 0; /* Espaciado superior para evitar la superposición del navbar */
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1); /* Sombra en el borde derecho */
+}
+
+/* Ajusta el ancho del sidebar */
+@media (min-width: 768px) {
+    .sidebar {
+        width: 227px;
+    }
+}
+
+.navbarBgColor{
+    background-color: #8EE3F5;
+}
+
+.nav-item {
+    padding: 5px;
+    margin-bottom: 5px;
+    transition: background-color 0.3s; /* Agrega una transición suave al cambio de color */
+}
+
+.nav-item:hover {
+    background-color: #70CAD1; /* Cambia el color de fondo cuando se pasa el mouse sobre el elemento */
+}
+
+.dropdown-toggle { outline: 0; }
+
+/* .body{
+    background-color: #A8E0FF;
+} */
