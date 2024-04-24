@@ -4,6 +4,39 @@ let enlace = "";
 let user_name = document.getElementById("user_name");
 let logOut = document.getElementById("logOut");
 
+var ctx = document.getElementById('chartOne').getContext('2d');
+var chartOne = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Banco A', '', 'Banco B', '', 'Banco C', ''],
+        datasets: [{
+            label: 'Dataset 1',
+            backgroundColor: 'yellow',
+            borderColor: 'yellow',
+            borderWidth: 1,
+            data: [10, 0, 20, 0, 30]
+        }, {
+            label: 'Dataset 2',
+            backgroundColor: 'blue',
+            borderColor: 'blue',
+            borderWidth: 1,
+            data: [0, 15, 0, 25, 0, 35]
+        }]
+    },
+    options: {
+        scales: {
+            x: {
+                stacked: true
+            },
+            y: {
+                stacked: true
+            }
+        },
+        indexAxis: 'y',
+        responsive: false
+    }
+});
+
 window.addEventListener("load", function(event){
     event.preventDefault();
     if(this.localStorage.getItem("nombre")!=null){
