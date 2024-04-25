@@ -39,3 +39,8 @@
 }
 
 .dropdown-toggle { outline: 0; }
+
+table {
+    font-size: 12px;
+    /* border: 1px solid #CCC; */
+}

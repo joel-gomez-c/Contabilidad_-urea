@@ -31,7 +31,7 @@ var chartOne = new Chart(ctxOne, {
                 display: false
             }
         },
-        responsive: false
+        responsive: true
         // Configuración para la gráfica en 3D
         // plugins: {
         //     chartJsPlugin3d: {
@@ -66,7 +66,7 @@ var chartTwo = new Chart(ctxTwo, {
             }
         },
         indexAxis: 'y',
-        responsive: false
+        responsive: true
     }
 });
 

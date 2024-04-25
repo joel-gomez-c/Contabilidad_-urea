@@ -33,7 +33,7 @@ var chartOne = new Chart(ctx, {
             }
         },
         indexAxis: 'y',
-        responsive: false
+        responsive: true
     }
 });
 
