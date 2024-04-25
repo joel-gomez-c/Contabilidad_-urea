@@ -125,13 +125,49 @@
                 <div class="row">
                     <div class="col-12">
                         <!-- Contenido principal aquí-->
-                        <p id="texto1">Buen</p>
+                        <div class="row pt-2" style="background-color: #FFFFFF;">
+                            <div class="col-md-4 col-12 mb-2 col-lg-2">
+                                <button class="btn btn-info px-3 w-100" type="button">Cobrada</button>
+                            </div>
+                            <div class="col-md-4 col-12 mb-2 col-lg-2">
+                                <button class="btn btn-info px-3 w-100" type="button">Pendiente de cancelar</button>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row p-3" style="background-color: #FFFFFF;">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead><tr class="tableizer-firstrow"><th>Etiquetas de fila</th><th>  SubTotal </th><th>  ISRRetenido </th><th>  IVARetenido </th><th>  IVATrasladado16 </th><th>  Total </th></tr></thead><tbody>
+                                     <tr><td>ESTEBAN EMILIO PERDOME</td><td> 28,000.00 </td><td> -   </td><td> -   </td><td> 4,480.00 </td><td> 32,480.00 </td></tr>
+                                     <tr><td>MIGUEL ANGEL JARILLO GIRON</td><td> 17,200.00 </td><td> -   </td><td> -   </td><td> 2,752.00 </td><td> 19,952.00 </td></tr>
+                                     <tr><td>PUBLICO EN GENERAL</td><td> 15,717.24 </td><td> -   </td><td> -   </td><td> 2,514.76 </td><td> 18,232.00 </td></tr>
+                                     <tr><td>ERNESTO EDUARDO VARGAS BLANCO</td><td> 6,000.00 </td><td> -   </td><td> -   </td><td> 960.00 </td><td> 6,960.00 </td></tr>
+                                     <tr><td>Total general</td><td> 66,917.24 </td><td> -   </td><td> -   </td><td> 10,706.76 </td><td> 77,624.00</td></tr>
+                                    </tbody></table>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row p-3" style="background-color: #FFFFFF;">
+                            <div class="col">
+                                <canvas id="chartOne" width="400" height="200"></canvas>
+                            </div>
+                            <div class="col">
+                                <canvas id="chartTwo" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                        <!-- <div class="row p-3" style="background-color: #FFFFFF;">
+                            <div class="table-responsive">
+
+                            </div>
+                        </div> -->
                     </div>
                 </div>
             </main>
         </div>
     </div>
-    <script src="../js/cobranza.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Chart js-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/cobranza.js" defer></script>
 </body>
 </html>
