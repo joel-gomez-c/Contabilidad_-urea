@@ -43,3 +43,8 @@
 /* .body{
     background-color: #A8E0FF;
 } */
+
+table {
+    font-size: 12px;
+    /* border: 1px solid #CCC; */
+}

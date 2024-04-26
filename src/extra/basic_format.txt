@@ -1,0 +1,198 @@
+****HTML****
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <!-- Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        .dropdown-menu .active{
+            display: block !important;
+        }
+    </style>
+</head>
+<body style="background-color: #E2E8F3;">
+    <nav class="navbar navbar-dark sticky-top navbarBgColor flex-md-nowrap p-0 shadow">
+        <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Otras partes de la barra de navegación aquí -->
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar-->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar collapse" style="background-color: #8EE3F5;">
+                <div class="position-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">
+                                Inicio
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="html/reporte.html">
+                                Reporte
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="html/calculo_de_impuestos.html">
+                                Calculo de Impuestos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="html/bancos.html">
+                                Bancos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="html/estados_financieros.html">
+                                Estados Financieros
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="html/cobranza.html">
+                                Cobranza
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="html/cuentas_por_pagar.html">
+                                Cuentas por pagar
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                Información Relevante
+                            </a>
+                        </li> -->
+                    </ul>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                          <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                          <strong id="user_name">mdo</strong>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                          <!-- <li><a class="dropdown-item" href="#">New project...</a></li>
+                          <li><a class="dropdown-item" href="#">Settings</a></li>
+                          <li><a class="dropdown-item" href="#">Profile</a></li>
+                          <li><hr class="dropdown-divider"></li> -->
+                          <li><a class="dropdown-item" id="logOut">Cerrar sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- Contenido principal-->
+            <!--<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">-->
+            <main class="col-md-8 ms-sm-auto col-lg-9 p-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Página principal</h1>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Contenido principal aquí-->
+                        <p id="texto1">Buen</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="js/index.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
+
+****CSS****
+*{
+    font-family: "DM Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    /* color: #000000; */
+}
+
+/* Estilo personalizado para el sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100; /* Asegura que el sidebar esté encima del contenido principal */
+    padding: 48px 0 0; /* Espaciado superior para evitar la superposición del navbar */
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1); /* Sombra en el borde derecho */
+}
+
+/* Ajusta el ancho del sidebar */
+@media (min-width: 768px) {
+    .sidebar {
+        width: 227px;
+    }
+}
+
+.navbarBgColor{
+    background-color: #8EE3F5;
+}
+
+.nav-item {
+    padding: 5px;
+    margin-bottom: 5px;
+    transition: background-color 0.3s; /* Agrega una transición suave al cambio de color */
+}
+
+.nav-item:hover {
+    background-color: #70CAD1; /* Cambia el color de fondo cuando se pasa el mouse sobre el elemento */
+}
+
+.dropdown-toggle { outline: 0; }
+
+/* .body{
+    background-color: #A8E0FF;
+} */
+
+****JAVASCRIPT****
+let texto1 = document.getElementById("texto1");
+let nombre = "";
+let enlace = "";
+let user_name = document.getElementById("user_name");
+let logOut = document.getElementById("logOut");
+
+window.addEventListener("load", function(event){
+    event.preventDefault();
+    if(this.localStorage.getItem("nombre")!=null){
+        nombre = String(this.localStorage.getItem("nombre"));
+        enlace = String(this.localStorage.getItem("enlace"));
+
+        let fecha = new Date();
+        let hora = fecha.getHours();
+        console.log(hora);
+        if(hora>=0 && hora<12){
+            //console.log("Buenos días");
+            texto1.innerText = `Buenos días ${nombre}`;
+        }else if(hora>=12 && hora<20){
+            //console.log("Buenas tardes");
+            texto1.innerText = `Buenas tardes ${nombre}`;
+        }else{
+            //console.log("Buenas noches");
+            texto1.innerText = `Buenas noches ${nombre}`;
+        }
+
+        user_name.innerText = `${nombre}`;
+
+    }//if != null
+
+});//window load
+
+logOut.addEventListener("click", function(event) {
+    event.preventDefault();
+    localStorage.removeItem("nombre");
+    localStorage.removeItem("enlace");
+    // localStorage.removeItem("usuario");
+    // localStorage.removeItem("contraseña");
+    window.location.href = "../html/login.html";
+});
