@@ -43,3 +43,19 @@
 /* .body{
     background-color: #A8E0FF;
 } */
+
+.background-container {
+    background-image: url('../src/img/premium_photo-1661878589476-bcad7fe1b8c5.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 275px; /* Ajusta la altura según tu imagen */
+    position: relative;
+}
+
+/* .background-container h1 {
+    position: absolute;
+    top: 20px; 
+    left: 20px; 
+    color: white; 
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
+} */
