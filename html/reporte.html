@@ -12,9 +12,23 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="../css/reporte.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         .dropdown-menu .active{
             display: block !important;
+        }
+        .info-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -165,6 +179,12 @@
                             <div class="col-md-4 col-12 mb-2 col-lg-2">
                                 <button class="btn btn-info px-3 w-100" type="button">Diciembre</button>
                             </div>
+                            <div class="col-md-4 col-12 mb-2 col-lg-2">
+                                <button class="btn btn-info px-3 w-100" type="button">Diciembre</button>
+                            </div>
+                            <div class="col-md-4 col-12 mb-2 col-lg-2">
+                                <button class="info-button" id="infoOne"><i class="fas fa-info-circle"></i></button>
+                            </div>
                             <!-- <div class="d-flex gap-2 justify-content-center py-5">
                               </div> -->
                         </div>
@@ -178,6 +198,9 @@
                         </div>
                         <br>
                         <div class="row p-3" style="background-color: #FFFFFF;">
+                            <div class="row">
+                                <button class="info-button" id="infoTwo"><i class="fas fa-info-circle"></i></button>
+                            </div>
                             <div class="col-sm">
                                 <div class="mb-3">
                                     <div class="table-responsive">
@@ -251,6 +274,7 @@
                             </div>
                             <div class="col">
                                 <!-- <div class="row align-items-center" style="min-height: 50vh;"> -->
+                                    <button class="info-button" id="infoThree"><i class="fas fa-info-circle"></i></button>
                                     <canvas id="pieChart" width="400" height="200"></canvas>
                                 <!-- </div> -->
                             </div>
@@ -259,10 +283,14 @@
                         <div class="row p-3" style="background-color: #FFFFFF;">
                             <div class="col">
                                 <!-- <div class="row align-items-center" style="min-height: 50vh;"> -->
+                                    <button class="info-button" id="infoFour"><i class="fas fa-info-circle"></i></button>
                                     <canvas id="doughnutChart" width="400" height="200"></canvas>
                                 <!-- </div> -->
                             </div>
                             <div class="col">
+                                <div class="row">
+                                    <button class="info-button" id="infoFive"><i class="fas fa-info-circle"></i></button>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead><tr class="tableizer-firstrow"><th>Valores</th><th>&nbsp;</th></tr></thead><tbody>
@@ -291,6 +319,7 @@
     <!-- Chart js-->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-3d"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
     <script src="../js/reporte.js" defer></script>
 </body>
 </html>

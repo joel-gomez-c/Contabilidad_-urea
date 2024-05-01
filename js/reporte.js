@@ -2,6 +2,11 @@ let nombre = "";
 let enlace = "";
 let user_name = document.getElementById("user_name");
 let logOut = document.getElementById("logOut");
+let infoOne = document.getElementById("infoOne");
+let infoTwo = document.getElementById("infoTwo");
+let infoThree = document.getElementById("infoThree");
+let infoFour = document.getElementById("infoFour");
+let infoFive = document.getElementById("infoFive");
 //let texto1 = document.getElementById("texto1");
 
 var ctxLine = document.getElementById('lineChart').getContext('2d');
@@ -187,4 +192,29 @@ logOut.addEventListener("click", function(event) {
     // localStorage.removeItem("usuario");
     // localStorage.removeItem("contraseña");
     window.location.href = "../html/login.html";
+});
+
+infoOne.addEventListener("click", function(event) {
+    event.preventDefault();
+    window.alert("Los meses en la parte superior controlan todas las tablas y gráficas, así que, puedes analizar todo el año o por meses separados");
+});
+
+infoTwo.addEventListener("click", function(event) {
+    event.preventDefault();
+    window.alert("En este apartado podrás encontrar todos tus ingresos y gastos facturados, así como, identificar a los más representativos.");
+});
+
+infoThree.addEventListener("click", function(event) {
+    event.preventDefault();
+    window.alert("En la gráfica podrás ver el % que representa del 100% de ingresos, los pagos de impuestos y el porcentaje que queda después de quitar impuestos (rojo)");
+});
+
+infoFour.addEventListener("click", function(event) {
+    event.preventDefault();
+    window.alert("En las dos tablas puedes ver el cálculo de cada mes, (ISR e IVA), Y el estatus de la declaración del siguiente mes.");
+});
+
+infoFive.addEventListener("click", function(event) {
+    event.preventDefault();
+    window.alert("Para ver el cálculo anual, selecciona de Enero - Diciembre");
 });
