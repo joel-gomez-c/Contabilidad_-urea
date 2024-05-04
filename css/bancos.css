@@ -45,6 +45,12 @@ table {
     /* border: 1px solid #CCC; */
 }
 
+.table th {
+    background-color: #104E8B; 
+    color: #FFF;
+    font-weight: bold;
+}
+
 /* .body{
     background-color: #A8E0FF;
 } */

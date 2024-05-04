@@ -196,7 +196,7 @@ logOut.addEventListener("click", function(event) {
 
 infoOne.addEventListener("click", function(event) {
     event.preventDefault();
-    window.alert("Los meses en la parte superior controlan todas las tablas y gráficas, así que, puedes analizar todo el año o por meses separados");
+    window.alert("Los meses controlan todas las tablas y gráficas, así que, puedes analizar todo el año o por meses separados");
 });
 
 infoTwo.addEventListener("click", function(event) {
