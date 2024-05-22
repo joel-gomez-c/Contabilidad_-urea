@@ -17,11 +17,11 @@
             display: block !important;
         }
     </style>
-    <script src="../js/credenciales.js"></script>
+    <!-- <script src="../js/credenciales.js"></script>
 	<script src="../js/cobranza.js" defer></script>
 	<script async defer src="https://apis.google.com/js/api.js" id="gapi"></script>
 	<script async defer src="https://accounts.google.com/gsi/client" id="gis"></script>
-	<script async defer src="../js/sheets.js"></script>
+	<script async defer src="../js/sheets.js"></script> -->
 </head>
 <body style="background-color: #C4D2E7;">
     <!-- <div class="container-fluid">
@@ -140,8 +140,9 @@
                         </div>
                         <br>
                         <div class="row p-3" style="background-color: #FFFFFF;">
-                            <div class="table-responsive">
-                                <table class="table">
+                            <pre id="content" style="white-space: pre-wrap;"></pre>
+                            <!-- <div class="table-responsive">
+                                <table class="table" id="tableOne">
                                     <thead><tr class="tableizer-firstrow"><th>Etiquetas de fila</th><th>  SubTotal </th><th>  ISRRetenido </th><th>  IVARetenido </th><th>  IVATrasladado16 </th><th>  Total </th></tr></thead><tbody>
                                      <tr><td>ESTEBAN EMILIO PERDOME</td><td> 28,000.00 </td><td> -   </td><td> -   </td><td> 4,480.00 </td><td> 32,480.00 </td></tr>
                                      <tr><td>MIGUEL ANGEL JARILLO GIRON</td><td> 17,200.00 </td><td> -   </td><td> -   </td><td> 2,752.00 </td><td> 19,952.00 </td></tr>
@@ -149,7 +150,8 @@
                                      <tr><td>ERNESTO EDUARDO VARGAS BLANCO</td><td> 6,000.00 </td><td> -   </td><td> -   </td><td> 960.00 </td><td> 6,960.00 </td></tr>
                                      <tr><td>Total general</td><td> 66,917.24 </td><td> -   </td><td> -   </td><td> 10,706.76 </td><td> 77,624.00</td></tr>
                                     </tbody></table>
-                            </div>
+                                </table>
+                            </div> -->
                         </div>
                         <br>
                         <div class="row p-3" style="background-color: #FFFFFF;">
@@ -173,7 +175,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <!-- Chart js-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="../js/auth.js"></script>
-    <!-- <script src="../js/cobranza.js" defer></script> -->
+    <!-- <script src="../js/auth.js"></script> -->
+    <script async defer src="https://apis.google.com/js/api.js" id="gapi"></script>
+	<script async defer src="https://accounts.google.com/gsi/client" id="gis"></script>
+    <script src="../js/cobranza.js" defer></script>
 </body>
 </html>

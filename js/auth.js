@@ -56,31 +56,26 @@
   /**
    * Enables user interaction after all libraries are loaded.
    */
-  // function maybeEnableButtons() {
-  //   if (gapiInited && gisInited) {
-  //     document.getElementById('authorize_button').style.visibility = 'visible';
-  //   }
-  // }
+  function maybeEnableButtons() {
+    if (gapiInited && gisInited) {
+      //document.getElementById('authorize_button').style.visibility = 'visible';
+      handleAuthClick();
+    }
+  }
 
   /**
    *  Sign in the user upon button click.
    */
-  logOut.addEventListener("click", function(event) {
-    event.preventDefault();
-    
-});
-
-window.addEventListener("load", function(event){
-  event.preventDefault();
-  iniciarPagina();
+function handleAuthClick() {
   tokenClient.callback = async (resp) => {
     if (resp.error !== undefined) {
       throw (resp);
     }
     // document.getElementById('signout_button').style.display = 'inline-block';
     // document.getElementById('authorize_button').innerText = 'Refresh';
-    await getTurnos();
-    actualizarTarjetas();
+    // await getTurnos();
+    // actualizarTarjetas();
+    await listMajors();
   };
 
   if (gapi.client.getToken() === null) {
@@ -91,20 +86,19 @@ window.addEventListener("load", function(event){
     //Skip display of account chooser and consent dialog for an existing session.
     tokenClient.requestAccessToken({prompt: ''});
   }
-
-});//window load
+}
 
   /**
    *  Sign out the user upon button click.
    */
-  function handleSignoutClick() {
-    const token = gapi.client.getToken();
-    if (token !== null) {
-      google.accounts.oauth2.revoke(token.access_token);
-      gapi.client.setToken('');
-      //document.getElementById('content').innerText = '';
-      document.getElementById('authorize_button').innerText = 'Authorize';
-      document.getElementById('signout_button').style.visibility = 'hidden';
-    }
-  }
+  // function handleSignoutClick() {
+  //   const token = gapi.client.getToken();
+  //   if (token !== null) {
+  //     google.accounts.oauth2.revoke(token.access_token);
+  //     gapi.client.setToken('');
+  //     //document.getElementById('content').innerText = '';
+  //     document.getElementById('authorize_button').innerText = 'Authorize';
+  //     document.getElementById('signout_button').style.visibility = 'hidden';
+  //   }
+  // }
 
