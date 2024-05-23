@@ -28,6 +28,12 @@ let gisInited = false;
 document.getElementById("gapi").addEventListener("load", gapiLoaded);
 document.getElementById("gis").addEventListener("load", gisLoaded);
 
+// Get the table body element
+const tableBody = document.getElementById('tableOne').getElementsByTagName('tbody')[0];
+
+// Clear any existing rows
+tableBody.innerHTML = '';
+
 //   document.getElementById('authorize_button').style.visibility = 'hidden';
 //   document.getElementById('signout_button').style.visibility = 'hidden';
 var chartOne = new Chart(ctxOne, {
@@ -130,7 +136,6 @@ logOut.addEventListener("click", function(event) {
  */
 function gapiLoaded() {
     gapi.load('client', initializeGapiClient);
-    console.log("gapi loaded");
 }
 
 /**
@@ -143,7 +148,6 @@ async function initializeGapiClient() {
         discoveryDocs: [DISCOVERY_DOC],
     });
     gapiInited = true;
-    console.log("Initialize Gapi Client");
     maybeEnableButtons();
 }
 
@@ -157,7 +161,6 @@ function gisLoaded() {
         callback: '', // defined later
     });
     gisInited = true;
-    console.log("gis Loaded");
     maybeEnableButtons();
 }
 
@@ -168,7 +171,6 @@ function maybeEnableButtons() {
     if (gapiInited && gisInited) {
         //document.getElementById('authorize_button').style.visibility = 'visible';
         handleAuthClick();
-        console.log("Successful 1");
     }
 }
 
@@ -218,24 +220,36 @@ async function listMajors() {
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
-            range: 'Class Data!A2:E',
+            spreadsheetId: '1t4hpEx4LDT_4kuEaAiMaOVE9QGZhMi7eyYbsXNuR2K8',
+            range: 'cobranza!B2:G',
         });
     } catch (err) {
         document.getElementById('content').innerText = err.message;
-        console.log(err.message);
         return;
     }
     const range = response.result;
     if (!range || !range.values || range.values.length == 0) {
         document.getElementById('content').innerText = 'No values found.';
-        console.log('No values found.');
         return;
     }
+    console.log(range.values);
+    // console.log(`Name: ${range.values[10][0]}, Major: ${range.values[10][4]}`);
     // Flatten to string to display
-    const output = range.values.reduce(
-        (str, row) => `${str}${row[0]}, ${row[4]}\n`,
-        'Name, Major:\n');
-    document.getElementById('content').innerText = output;
-    console.log(output);
+    // const output = range.values.reduce(
+    //     (str, row) => `${str}${row[0]}, ${row[4]}\n`,
+    //     'Name, Major:\n');
+    // document.getElementById('content').innerText = output;
+
+    // Iterate over each row in the range.values array
+    range.values.forEach(r => {
+        let row = `<tr>
+            <td>${r[0]}</td>
+            <td>${r[1]}</td>
+            <td>${r[2]}</td>
+            <td>${r[3]}</td>
+            <td>${r[4]}</td>
+            <td>${r[5]}</td>
+            </tr>`;
+        tableBody.insertAdjacentHTML("beforeend", row);
+    });
 }
