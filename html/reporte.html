@@ -203,8 +203,9 @@
                             </div>
                             <div class="col-sm">
                                 <div class="mb-3">
+                                    <pre id="contentOne" style="white-space: pre-wrap;"></pre>
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table" id="tableOne">
                                             <thead><tr class="tableizer-firstrow"><th>Clientes</th><th>Facturas</th><th>Subtotal</th></tr></thead><tbody>
                                              <tr><td>Cobrada</td><td>&nbsp;</td><td>&nbsp;</td></tr>
                                              <tr><td>DRIDCO MEXICO</td><td>2</td><td>103,176.00</td></tr>
@@ -224,8 +225,9 @@
                             </div>
                             <div class="col-sm">
                                 <div class="row align-items-center" style="min-height: 50vh;">
+                                    <pre id="contentTwo" style="white-space: pre-wrap;"></pre>
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table" id="tableTwo">
                                             <thead><tr class="tableizer-firstrow"><th>Proveedor</th><th>Tipo</th><th>Facturas</th><th>Subtotal</th><th>Monto deducible</th></tr></thead><tbody>
                                              <tr><td>GRUPO EMPRESARIAL S.J.</td><td>I-Ingreso</td><td>24</td><td>22,744.03 </td><td>21,228.88 </td></tr>
                                              <tr><td>IRMA ROSA ROBLES GARCIA</td><td>I-Ingreso</td><td>2</td><td>16,000.00 </td><td>0.00 </td></tr>
@@ -258,8 +260,9 @@
                         <br>
                         <div class="row p-3" style="background-color: #FFFFFF;">
                             <div class="col">
+                                <pre id="contentThree" style="white-space: pre-wrap;"></pre>
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table" id="tableThree">
                                         <thead><tr class="tableizer-firstrow"><th>Cálculo de ISR</th><th>&nbsp;</th></tr></thead><tbody>
                                          <tr><td>TOTAL DE INGRESOS GRAV</td><td>174,127.00</td></tr>
                                          <tr><td>ISR CAUSADO</td><td>3,271.00</td></tr>
@@ -292,7 +295,7 @@
                                     <button class="info-button" id="infoFive"><i class="fas fa-info-circle"></i></button>
                                 </div>
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table" id="tableFour">
                                         <thead><tr class="tableizer-firstrow"><th>Valores</th><th>&nbsp;</th></tr></thead><tbody>
                                          <tr><td>INGRESOS COBRADOS 16%</td><td>174,127.00</td></tr>
                                          <tr><td>IVA por devoluciones, descuentos y bonificaciones en gastos</td><td>55,068.00</td></tr>
@@ -320,6 +323,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-3d"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js" id="gapi"></script>
+	<script async defer src="https://accounts.google.com/gsi/client" id="gis"></script>
     <script src="../js/reporte.js" defer></script>
 </body>
 </html>
