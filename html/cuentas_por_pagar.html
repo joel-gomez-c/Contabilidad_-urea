@@ -135,8 +135,9 @@
                         </div>
                         <br>
                         <div class="row p-3" style="background-color: #FFFFFF;">
+                            <pre id="content" style="white-space: pre-wrap;"></pre>
                             <div class="table-responsive">
-                                <table class="table">
+                                <table class="table" id="tableOne">
                                     <thead><tr class="tableizer-firstrow"><th>Etiquetas de fila</th><th>  SubTotal </th><th>  Descuento </th><th> IVA </th><th>  BaseIVaExento </th><th>  BaseTasaCero </th><th>  Total </th><th>  Monto deducible </th></tr></thead><tbody>
                                      <tr><td>(en blanco)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
                                      <tr><td>Total general</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td></td></tr>
@@ -153,7 +154,9 @@
             </main>
         </div>
     </div>
-    <script src="../js/cuentas_por_pagar.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script async defer src="https://apis.google.com/js/api.js" id="gapi"></script>
+	<script async defer src="https://accounts.google.com/gsi/client" id="gis"></script>
+    <script src="../js/cuentas_por_pagar.js" defer></script>
 </body>
 </html>
