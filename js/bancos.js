@@ -181,7 +181,7 @@ async function listMajors() {
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            spreadsheetId: enlace,
             range: 'Bancos!B7:F11',
         });
     } catch (err) {
@@ -219,7 +219,7 @@ async function listMajorsTwo() {
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            spreadsheetId: enlace,
             range: 'Bancos!I3:S287',
         });
     } catch (err) {
@@ -263,7 +263,7 @@ async function listMajorsThree() {
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            spreadsheetId: enlace,
             range: 'Bancos!U3:AB14',
         });
     } catch (err) {
@@ -304,7 +304,7 @@ async function listMajorsFour() {
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            spreadsheetId: enlace,
             range: 'Bancos!AD2:AF14',
         });
     } catch (err) {

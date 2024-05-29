@@ -220,7 +220,7 @@ async function listMajors() {
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            spreadsheetId: enlace,
             range: 'Cobranza!B3:G7',
         });
     } catch (err) {

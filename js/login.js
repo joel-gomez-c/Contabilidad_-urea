@@ -21,7 +21,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         const nombre = row[0];
         const usuario = row[1];
         const contraseña = row[2];
-        const enlace = row[3];
+        const enlace = row[3].trim();
         if((username.value == usuario) && (password.value == contraseña)){
             // console.log(`Nombre: ${nombre}, Usuario: ${usuario}, Contraseña: ${contraseña}, Enlace: ${enlace}`);
             localStorage.setItem("nombre", nombre);

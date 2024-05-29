@@ -141,7 +141,7 @@ async function listMajors() {
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            spreadsheetId: enlace,
             range: 'Calculo impuestos 2024!B4:N19',
         });
     } catch (err) {
@@ -187,7 +187,7 @@ async function listMajorsTwo() {
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            spreadsheetId: enlace,
             range: 'Calculo impuestos 2024!B22:N49',
         });
     } catch (err) {

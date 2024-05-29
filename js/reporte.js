@@ -33,6 +33,9 @@ const tableBody = document.getElementById('tableOne').getElementsByTagName('tbod
 // Clear any existing rows
 tableBody.innerHTML = '';
 
+const tableBodyTwo = document.getElementById('tableTwo').getElementsByTagName('tbody')[0];
+tableBodyTwo.innerHTML = '';
+
 const tableBodyThree = document.getElementById('tableThree').getElementsByTagName('tbody')[0];
 tableBodyThree.innerHTML = '';
 
@@ -205,6 +208,7 @@ function handleAuthClick() {
         //   document.getElementById('signout_button').style.visibility = 'visible';
         //   document.getElementById('authorize_button').innerText = 'Refresh';
         await listMajors();
+        await listMajorsTwo();
         await listMajorsThree();
         await listMajorsFour();
         await listMajorsFive();
@@ -244,7 +248,7 @@ async function listMajors() {
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            spreadsheetId: enlace,
             range: 'REPORTE!B26:D32',
         });
     } catch (err) {
@@ -275,12 +279,49 @@ async function listMajors() {
     });
 }
 
+async function listMajorsTwo() {
+    let response;
+    try {
+        // Fetch first 10 files
+        response = await gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: enlace,
+            range: 'REPORTE!F26:I60',
+        });
+    } catch (err) {
+        document.getElementById('contentTwo').innerText = err.message;
+        return;
+    }
+    const range = response.result;
+    if (!range || !range.values || range.values.length == 0) {
+        document.getElementById('contentTwo').innerText = 'No values found.';
+        return;
+    }
+    console.log(range.values);
+    // console.log(`Name: ${range.values[10][0]}, Major: ${range.values[10][4]}`);
+    // Flatten to string to display
+    // const output = range.values.reduce(
+    //     (str, row) => `${str}${row[0]}, ${row[4]}\n`,
+    //     'Name, Major:\n');
+    // document.getElementById('content').innerText = output;
+
+    // Iterate over each row in the range.values array
+    range.values.forEach(r => {
+        let row = `<tr>
+            <td>${r[0]}</td>
+            <td>${r[1]}</td>
+            <td>${r[2]}</td>
+            <td>${r[3]}</td>
+            </tr>`;
+        tableBodyTwo.insertAdjacentHTML("beforeend", row);
+    });
+}
+
 async function listMajorsThree() {
     let response;
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            spreadsheetId: enlace,
             range: 'REPORTE!B61:C68',
         });
     } catch (err) {
@@ -309,7 +350,7 @@ async function listMajorsFour() {
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            spreadsheetId: enlace,
             range: 'REPORTE!F76:G86',
         });
     } catch (err) {
@@ -340,7 +381,7 @@ async function listMajorsFive() {
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            spreadsheetId: enlace,
             range: 'DATOS!Q15:AI26',
         });
     } catch (err) {
@@ -445,7 +486,7 @@ async function listMajorsSix() {
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            spreadsheetId: enlace,
             range: 'DATOS!B3:P14',
         });
     } catch (err) {

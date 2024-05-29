@@ -161,7 +161,7 @@ async function listMajors() {
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            spreadsheetId: enlace,
             range: 'Estados Financieros!B3:C47',
         });
     } catch (err) {
@@ -196,7 +196,7 @@ async function listMajorsTwo() {
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            spreadsheetId: enlace,
             range: 'Estados Financieros!F3:G46',
         });
     } catch (err) {
@@ -231,7 +231,7 @@ async function listMajorsThree() {
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            spreadsheetId: enlace,
             range: 'Estados Financieros!J3:X50',
         });
     } catch (err) {
@@ -279,7 +279,7 @@ async function listMajorsFour() {
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            spreadsheetId: enlace,
             range: 'Estados Financieros!AA3:AD26',
         });
     } catch (err) {
