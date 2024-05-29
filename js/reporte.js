@@ -8,7 +8,6 @@ let infoThree = document.getElementById("infoThree");
 let infoFour = document.getElementById("infoFour");
 let infoFive = document.getElementById("infoFive");
 //let texto1 = document.getElementById("texto1");
-var ctxLine = document.getElementById('lineChart').getContext('2d');
 
 // TODO(developer): Set to client ID and API key from the Developer Console
 const CLIENT_ID = '932482928952-9mhu5qq6st6ta27rv2uo42df1kd5vati.apps.googleusercontent.com';
@@ -40,103 +39,6 @@ tableBodyThree.innerHTML = '';
 const tableBodyFour = document.getElementById('tableFour').getElementsByTagName('tbody')[0];
 tableBodyFour.innerHTML = '';
 
-var lineChart = new Chart(ctxLine, {
-    type: 'line',
-    data: {
-        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        datasets: [{
-            label: 'Suma de INGRESOS COBRADOS',
-            data: [61, 78, 72, 61, 65, 76, 70, 75, 59, 59, 65, 77],
-            borderColor: 'blue',
-            borderWidth: 1
-        },
-        {
-            label: 'Suma de GASTOS PAGADOS',
-            data: [76, 77, 65, 59, 71, 64, 58, 84, 73, 70, 82, 60],
-            borderColor: 'yellow',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        // legend: {
-        //     display: false // Oculta la leyenda completa
-        // },
-        responsive: true,
-        maintainAspectRatio: false
-    }
-});
-
-var ctxBar = document.getElementById('barChart').getContext('2d');
-var barChart = new Chart(ctxBar, {
-    type: 'bar',
-    data: {
-        labels: ['Suma de INGRESOS COBRADOS', 'Suma de GASTOS PAGADOS'],
-        datasets: [{
-            label: 'Suma de INGRESOS COBRADOS',
-            data: [174127, 0],
-            backgroundColor: 'blue',
-            //borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-        },
-        {
-            label: 'Suma de GASTOS PAGADOS',
-            data: [0, 47957],
-            backgroundColor: 'yellow', // Color de la segunda barra
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        },
-        plugins: {
-            legend: {
-                display: false
-            }
-        },
-        responsive: false
-    }
-});
-
-var ctxPie = document.getElementById('pieChart').getContext('2d');
-var pieChart = new Chart(ctxPie, {
-    type: 'pie',
-    data: {
-        labels: ['IVA Suma de IMPUESTOS PAGADOS', 'ISR Suma de INGRESOS COBRADOS', 'ISR Suma de IMPUESTOS PAGADOS'],
-        datasets: [{
-            label: 'Dataset 1',
-            data: [90, 8, 2],
-            backgroundColor: [
-                'red',
-                'green',
-                'orange'
-            ]
-        }]
-    },
-    options: {
-        // plugins: {
-        //     legend: {
-        //         position: 'down'
-        //     }
-        // },
-        plugins: {
-            legend: {
-                display: false
-            }
-        },
-        responsive: false
-        // Configuración para la gráfica en 3D
-        // plugins: {
-        //     chartJsPlugin3d: {
-        //         enabled: true,
-        //         alpha: 45,
-        //         beta: 0
-        //     }
-        // }
-    }
-});
 var ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
 var doughnutChart = new Chart(ctxDoughnut, {
     type: 'doughnut',
@@ -189,9 +91,9 @@ var doughnutChart = new Chart(ctxDoughnut, {
 //     console.error('Error al cargar el archivo CSV:', error);
 //   });
 
-window.addEventListener("load", function(event){
+window.addEventListener("load", function (event) {
     event.preventDefault();
-    if(this.localStorage.getItem("nombre")!=null){
+    if (this.localStorage.getItem("nombre") != null) {
         nombre = String(this.localStorage.getItem("nombre"));
         enlace = String(this.localStorage.getItem("enlace"));
 
@@ -215,7 +117,7 @@ window.addEventListener("load", function(event){
 
 });//window load
 
-logOut.addEventListener("click", function(event) {
+logOut.addEventListener("click", function (event) {
     event.preventDefault();
     localStorage.removeItem("nombre");
     localStorage.removeItem("enlace");
@@ -224,27 +126,27 @@ logOut.addEventListener("click", function(event) {
     window.location.href = "../html/login.html";
 });
 
-infoOne.addEventListener("click", function(event) {
+infoOne.addEventListener("click", function (event) {
     event.preventDefault();
     window.alert("Los meses controlan todas las tablas y gráficas, así que, puedes analizar todo el año o por meses separados");
 });
 
-infoTwo.addEventListener("click", function(event) {
+infoTwo.addEventListener("click", function (event) {
     event.preventDefault();
     window.alert("En este apartado podrás encontrar todos tus ingresos y gastos facturados, así como, identificar a los más representativos.");
 });
 
-infoThree.addEventListener("click", function(event) {
+infoThree.addEventListener("click", function (event) {
     event.preventDefault();
     window.alert("En la gráfica podrás ver el % que representa del 100% de ingresos, los pagos de impuestos y el porcentaje que queda después de quitar impuestos (rojo)");
 });
 
-infoFour.addEventListener("click", function(event) {
+infoFour.addEventListener("click", function (event) {
     event.preventDefault();
     window.alert("En las dos tablas puedes ver el cálculo de cada mes, (ISR e IVA), Y el estatus de la declaración del siguiente mes.");
 });
 
-infoFive.addEventListener("click", function(event) {
+infoFive.addEventListener("click", function (event) {
     event.preventDefault();
     window.alert("Para ver el cálculo anual, selecciona de Enero - Diciembre");
 });
@@ -305,6 +207,8 @@ function handleAuthClick() {
         await listMajors();
         await listMajorsThree();
         await listMajorsFour();
+        await listMajorsFive();
+        await listMajorsSix();
     };
 
     if (gapi.client.getToken() === null) {
@@ -426,5 +330,186 @@ async function listMajorsFour() {
             <td>${r[1]}</td>
             </tr>`;
         tableBodyFour.insertAdjacentHTML("beforeend", row);
+    });
+}
+
+async function listMajorsFive() {
+    let response;
+    let arrayOne = [];
+    let arrayTwo = [];
+    try {
+        // Fetch first 10 files
+        response = await gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            range: 'DATOS!Q15:AI26',
+        });
+    } catch (err) {
+        document.getElementById('contentFive').innerText = err.message;
+        return;
+    }
+    const range = response.result;
+    if (!range || !range.values || range.values.length == 0) {
+        document.getElementById('contentFive').innerText = 'No values found.';
+        return;
+    }
+    // console.log(range.values);
+
+    // Iterate over each row in the range.values array
+    range.values.forEach(r => {
+        arrayOne.push(parseFloat(r[1].replace(/,/g, '')));
+        arrayTwo.push(parseFloat(r[9].replace(/,/g, '')));
+    });
+    console.log(arrayOne);
+    console.log(arrayTwo);
+
+    var ctxLine = document.getElementById('lineChart').getContext('2d');
+    var lineChart = new Chart(ctxLine, {
+        type: 'line',
+        data: {
+            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            datasets: [{
+                label: 'Suma de INGRESOS COBRADOS',
+                data: arrayOne,
+                borderColor: 'blue',
+                borderWidth: 1
+            },
+            {
+                label: 'Suma de GASTOS PAGADOS',
+                data: arrayTwo,
+                borderColor: 'yellow',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            // legend: {
+            //     display: false // Oculta la leyenda completa
+            // },
+            responsive: true,
+            maintainAspectRatio: false
+            // scales: {
+            //     y: {
+            //         beginAtZero: true,
+            //         suggestedMax: 70000 // Sugerir un rango máximo
+            //     }
+            // }
+        }
+    });
+
+    const suma1 = arrayOne.reduce((anterior, actual) => anterior + actual, 0);
+    const suma2 = arrayTwo.reduce((anterior, actual) => anterior + actual, 0);
+
+    console.log(suma1);
+    console.log(suma2);
+
+    var ctxBar = document.getElementById('barChart').getContext('2d');
+    var barChart = new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+            labels: ['Suma de INGRESOS COBRADOS', 'Suma de GASTOS PAGADOS'],
+            datasets: [{
+                label: 'Suma de INGRESOS COBRADOS',
+                data: [suma1, 0],
+                backgroundColor: 'blue',
+                //borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Suma de GASTOS PAGADOS',
+                data: [0, suma2],
+                backgroundColor: 'yellow', // Color de la segunda barra
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            responsive: false
+        }
+    });
+
+}
+
+async function listMajorsSix() {
+    let response;
+    let arrayOne=[];
+    let arrayTwo=[];
+    let arrayThree=[];
+    try {
+        // Fetch first 10 files
+        response = await gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: '1T5Djii_cGg0cyNHwYDJhg0S505Ok8h7jCDRBlZKoj1Y',
+            range: 'DATOS!B3:P14',
+        });
+    } catch (err) {
+        document.getElementById('contentSix').innerText = err.message;
+        return;
+    }
+    const range = response.result;
+    if (!range || !range.values || range.values.length == 0) {
+        document.getElementById('contentSix').innerText = 'No values found.';
+        return;
+    }
+    // Iterate over each row in the range.values array
+    range.values.forEach(r => {
+        arrayOne.push(parseFloat(r[2].replace(/,/g, '')));  //ingresos cobrados
+        arrayTwo.push(parseFloat(r[5].replace(/,/g, '')));  //ISR impuestos pagados
+        arrayThree.push(parseFloat(r[8].replace(/,/g, '')));    //IVA impuestos pagados
+    });
+    console.log(arrayOne);
+    console.log(arrayTwo);
+    console.log(arrayThree);
+
+    const suma1 = arrayOne.reduce((anterior, actual) => anterior + actual, 0);
+    const suma2 = arrayTwo.reduce((anterior, actual) => anterior + actual, 0);
+    const suma3 = arrayThree.reduce((anterior, actual) => anterior + actual, 0);
+
+    console.log(suma1);
+    console.log(suma2);
+    console.log(suma3);
+
+    var ctxPie = document.getElementById('pieChart').getContext('2d');
+    var pieChart = new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: ['IVA Suma de IMPUESTOS PAGADOS', 'ISR Suma de INGRESOS COBRADOS', 'ISR Suma de IMPUESTOS PAGADOS'],
+            datasets: [{
+                label: 'Dataset 1',
+                data: [suma3, suma1, suma2],
+                backgroundColor: [
+                    'red',
+                    'green',
+                    'orange'
+                ]
+            }]
+        },
+        options: {
+            // plugins: {
+            //     legend: {
+            //         position: 'down'
+            //     }
+            // },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            responsive: false
+            // Configuración para la gráfica en 3D
+            // plugins: {
+            //     chartJsPlugin3d: {
+            //         enabled: true,
+            //         alpha: 45,
+            //         beta: 0
+            //     }
+            // }
+        }
     });
 }
