@@ -152,7 +152,7 @@ async function listMajors() {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: enlace,
-            range: 'Cuentas por pagar!B3:I4',
+            range: 'Cuentas por pagar!B3:I',
         });
     } catch (err) {
         document.getElementById('content').innerText = err.message;
@@ -173,16 +173,20 @@ async function listMajors() {
 
     // Iterate over each row in the range.values array
     range.values.forEach(r => {
-        let row = `<tr>
-            <td>${r[0]}</td>
-            <td>${r[1]}</td>
-            <td>${r[2]}</td>
-            <td>${r[3]}</td>
-            <td>${r[4]}</td>
-            <td>${r[5]}</td>
-            <td>${r[6]}</td>
-            <td>${r[7]}</td>
+        const hasValues = r.some(cell => cell !== undefined && cell !== null && cell !== '');
+        if (hasValues) {
+            const rowData = r.map(cell => cell !== undefined ? cell : '');
+            const row = `<tr>
+            <td>${rowData[0]}</td>
+            <td>${rowData[1]}</td>
+            <td>${rowData[2]}</td>
+            <td>${rowData[3]}</td>
+            <td>${rowData[4]}</td>
+            <td>${rowData[5]}</td>
+            <td>${rowData[6]}</td>
+            <td>${rowData[7]}</td>
             </tr>`;
         tableBody.insertAdjacentHTML("beforeend", row);
+        }
     });
 }
