@@ -8,7 +8,6 @@ let nombre = "";
 let enlace = "";
 let user_name = document.getElementById("user_name");
 let logOut = document.getElementById("logOut");
-var ctxOne = document.getElementById('chartOne').getContext('2d');
 
 // TODO(developer): Set to client ID and API key from the Developer Console
 const CLIENT_ID = '932482928952-9mhu5qq6st6ta27rv2uo42df1kd5vati.apps.googleusercontent.com';
@@ -36,74 +35,10 @@ tableBody.innerHTML = '';
 
 //   document.getElementById('authorize_button').style.visibility = 'hidden';
 //   document.getElementById('signout_button').style.visibility = 'hidden';
-var chartOne = new Chart(ctxOne, {
-    type: 'pie',
-    data: {
-        labels: ['IVA Suma de IMPUESTOS PAGADOS', 'ISR Suma de INGRESOS COBRADOS', 'ISR Suma de IMPUESTOS PAGADOS'],
-        datasets: [{
-            label: 'Dataset 1',
-            data: [40, 25, 25, 10],
-            backgroundColor: [
-                'blue',
-                'yellow',
-                'green',
-                'orange'
-            ]
-        }]
-    },
-    options: {
-        // plugins: {
-        //     legend: {
-        //         position: 'down'
-        //     }
-        // },
-        plugins: {
-            legend: {
-                display: false
-            }
-        },
-        responsive: true
-        // Configuración para la gráfica en 3D
-        // plugins: {
-        //     chartJsPlugin3d: {
-        //         enabled: true,
-        //         alpha: 45,
-        //         beta: 0
-        //     }
-        // }
-    }
-});
 
-var ctxTwo = document.getElementById('chartTwo').getContext('2d');
-var chartTwo = new Chart(ctxTwo, {
-    type: 'bar',
-    data: {
-        labels: ['Ernesto Eduardo Vargas Blanco', 'Público en general', 'Miguel Ángel Jarillo Girón', 'Estebán Emilio Perdome'],
-        datasets: [{
-            label: 'Total',
-            backgroundColor: 'blue',
-            borderColor: 'blue',
-            borderWidth: 1,
-            data: [6960, 18232, 19952, 32480]
-        }]
-    },
-    options: {
-        scales: {
-            x: {
-                stacked: true
-            },
-            y: {
-                stacked: true
-            }
-        },
-        indexAxis: 'y',
-        responsive: true
-    }
-});
-
-window.addEventListener("load", function(event){
+window.addEventListener("load", function (event) {
     event.preventDefault();
-    if(this.localStorage.getItem("nombre")!=null){
+    if (this.localStorage.getItem("nombre") != null) {
         nombre = String(this.localStorage.getItem("nombre"));
         enlace = String(this.localStorage.getItem("enlace"));
 
@@ -122,7 +57,7 @@ window.addEventListener("load", function(event){
 //     }//if != null
 // }
 
-logOut.addEventListener("click", function(event) {
+logOut.addEventListener("click", function (event) {
     event.preventDefault();
     localStorage.removeItem("nombre");
     localStorage.removeItem("enlace");
@@ -217,6 +152,29 @@ function handleAuthClick() {
  */
 async function listMajors() {
     let response;
+    let arrayOne = [];
+    let arrayTwo = [];
+    let arrayThree = [];
+
+    // Función para generar un color hexadecimal aleatorio
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    // Función para generar un arreglo de colores aleatorios basado en el tamaño del arreglo de datos
+    function generateRandomColors(dataLength) {
+        const colors = [];
+        for (let i = 0; i < dataLength; i++) {
+            colors.push(getRandomColor());
+        }
+        return colors;
+    }
+
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
@@ -245,6 +203,7 @@ async function listMajors() {
         const hasValues = r.some(cell => cell !== undefined && cell !== null && cell !== '');
         if (hasValues) {
             const rowData = r.map(cell => cell !== undefined ? cell : '');
+            console.log(rowData.length);
             const row = `<tr>
             <td>${rowData[0]}</td>
             <td>${rowData[1]}</td>
@@ -253,7 +212,76 @@ async function listMajors() {
             <td>${rowData[4]}</td>
             <td>${rowData[5]}</td>
             </tr>`;
-        tableBody.insertAdjacentHTML("beforeend", row);
+            tableBody.insertAdjacentHTML("beforeend", row);
+            arrayOne.push(parseFloat(rowData[4].replace(/,/g, '')));
+            arrayTwo.push(parseFloat(rowData[5].replace(/,/g, '')));
+            arrayThree.push(rowData[0]);
+        }
+    });
+    console.log(arrayThree);
+    console.log(arrayOne);
+    console.log(arrayTwo);
+
+    let backgroundColors = generateRandomColors(arrayOne.length);
+
+    var ctxOne = document.getElementById('chartOne').getContext('2d');
+    var chartOne = new Chart(ctxOne, {
+        type: 'pie',
+        data: {
+            labels: arrayThree.slice(0, arrayThree.length-1),
+            datasets: [{
+                label: 'Dataset 1',
+                data: arrayOne.slice(0, arrayOne.length-1),
+                backgroundColor: backgroundColors
+            }]
+        },
+        options: {
+            // plugins: {
+            //     legend: {
+            //         position: 'down'
+            //     }
+            // },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            responsive: true
+            // Configuración para la gráfica en 3D
+            // plugins: {
+            //     chartJsPlugin3d: {
+            //         enabled: true,
+            //         alpha: 45,
+            //         beta: 0
+            //     }
+            // }
+        }
+    });
+
+    var ctxTwo = document.getElementById('chartTwo').getContext('2d');
+    var chartTwo = new Chart(ctxTwo, {
+        type: 'bar',
+        data: {
+            labels: arrayThree.slice(0, arrayThree.length-1),
+            datasets: [{
+                label: 'Total',
+                backgroundColor: 'blue',
+                borderColor: 'blue',
+                borderWidth: 1,
+                data: arrayTwo.slice(0, arrayTwo.length-1)
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    stacked: true
+                },
+                y: {
+                    stacked: true
+                }
+            },
+            indexAxis: 'y',
+            responsive: true
         }
     });
 }

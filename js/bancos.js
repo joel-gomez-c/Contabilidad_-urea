@@ -3,7 +3,6 @@ let nombre = "";
 let enlace = "";
 let user_name = document.getElementById("user_name");
 let logOut = document.getElementById("logOut");
-var ctx = document.getElementById('chartOne').getContext('2d');
 
 // TODO(developer): Set to client ID and API key from the Developer Console
 const CLIENT_ID = '932482928952-9mhu5qq6st6ta27rv2uo42df1kd5vati.apps.googleusercontent.com';
@@ -35,38 +34,6 @@ const tableBodyThree = document.getElementById('tableThree').getElementsByTagNam
 tableBodyThree.innerHTML = '';
 const tableBodyFour = document.getElementById('tableFour').getElementsByTagName('tbody')[0];
 tableBodyFour.innerHTML = '';
-
-var chartOne = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['Banco A', '', 'Banco B', '', 'Banco C', ''],
-        datasets: [{
-            label: 'Dataset 1',
-            backgroundColor: 'yellow',
-            borderColor: 'yellow',
-            borderWidth: 1,
-            data: [10, 0, 20, 0, 30]
-        }, {
-            label: 'Dataset 2',
-            backgroundColor: 'blue',
-            borderColor: 'blue',
-            borderWidth: 1,
-            data: [0, 15, 0, 25, 0, 35]
-        }]
-    },
-    options: {
-        scales: {
-            x: {
-                stacked: true
-            },
-            y: {
-                stacked: true
-            }
-        },
-        indexAxis: 'y',
-        responsive: true
-    }
-});
 
 window.addEventListener("load", function(event){
     event.preventDefault();
@@ -178,6 +145,9 @@ function handleAuthClick() {
  */
 async function listMajors() {
     let response;
+    let arrayOne = [];
+    let arrayTwo = [];
+    let arrayThree = [];
     try {
         // Fetch first 10 files
         response = await gapi.client.sheets.spreadsheets.values.get({
@@ -198,11 +168,14 @@ async function listMajors() {
     // Flatten to string to display
     // const output = range.values.reduce(
     //     (str, row) => `${str}${row[0]}, ${row[4]}\n`,
-    //     'Name, Major:\n');
+    //     'Name, Major:\n');   AQUI IRIA LA GRAFICA
     // document.getElementById('content').innerText = output;
 
     // Iterate over each row in the range.values array
     range.values.forEach(r => {
+        arrayOne.push(parseFloat(r[2].replace(/,/g, '')));  //Depositos
+        arrayTwo.push(parseFloat(r[3].replace(/,/g, '')));  //Retiros
+        arrayThree.push(r[1]);  //Etiquetas de fila
         let row = `<tr>
             <td>${r[0]}</td>
             <td>${r[1]}</td>
@@ -211,6 +184,39 @@ async function listMajors() {
             <td>${r[4]}</td>
             </tr>`;
         tableBody.insertAdjacentHTML("beforeend", row);
+    });
+
+    var ctx = document.getElementById('chartOne').getContext('2d');
+    var chartOne = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [arrayThree[0], '', arrayThree[1], '', arrayThree[2], ''],
+            datasets: [{
+                label: 'Retiros',
+                backgroundColor: 'yellow',  //retiros
+                borderColor: 'yellow',
+                borderWidth: 1,
+                data: [arrayTwo[0], 0, arrayTwo[1], 0, arrayTwo[2]]
+            }, {
+                label: 'Depositos',
+                backgroundColor: 'blue',    //depositos
+                borderColor: 'blue',
+                borderWidth: 1,
+                data: [0, arrayOne[0], 0, arrayOne[1], 0, arrayOne[2]]
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    stacked: true
+                },
+                y: {
+                    stacked: true
+                }
+            },
+            indexAxis: 'y',
+            responsive: true
+        }
     });
 }
 
