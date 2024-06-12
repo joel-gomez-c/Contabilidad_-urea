@@ -50,3 +50,11 @@ table {
     color: #FFF;
     font-weight: bold;
 }
+
+.background-container {
+    background-image: url('../src/img/premium_photo-1661878589476-bcad7fe1b8c5.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 275px; /* Ajusta la altura según tu imagen */
+    position: relative;
+}
