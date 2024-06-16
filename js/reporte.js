@@ -127,6 +127,7 @@ logOut.addEventListener("click", function (event) {
     // localStorage.removeItem("usuario");
     // localStorage.removeItem("contraseña");
     window.location.href = "../html/login.html";
+    handleSignoutClick();
 });
 
 infoOne.addEventListener("click", function (event) {
@@ -155,6 +156,31 @@ infoFive.addEventListener("click", function (event) {
 });
 
 /**
+ * Callback after Google Identity Services are loaded.
+ */
+function gisLoaded() {
+    tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: async (response) => {
+            if (response.error !== undefined) {
+              throw (response);
+            }
+            storeToken(response.access_token);
+            await listMajors();
+            await listMajorsTwo();
+            await listMajorsThree();
+            await listMajorsFour();
+            await listMajorsFive();
+            await listMajorsSix();
+          }, // defined later
+    });
+    gisInited = true;
+    //maybeEnableButtons();
+    checkToken();
+}
+
+/**
  * Callback after api.js is loaded.
  */
 function gapiLoaded() {
@@ -171,73 +197,40 @@ async function initializeGapiClient() {
         discoveryDocs: [DISCOVERY_DOC],
     });
     gapiInited = true;
-    maybeEnableButtons();
+    //maybeEnableButtons();
+    checkToken();
 }
 
-/**
- * Callback after Google Identity Services are loaded.
- */
-function gisLoaded() {
-    tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: CLIENT_ID,
-        scope: SCOPES,
-        callback: '', // defined later
-    });
-    gisInited = true;
-    maybeEnableButtons();
-}
-
-/**
- * Enables user interaction after all libraries are loaded.
- */
-function maybeEnableButtons() {
-    if (gapiInited && gisInited) {
-        //document.getElementById('authorize_button').style.visibility = 'visible';
-        handleAuthClick();
+function checkToken() {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      gapi.client.setToken({ access_token: token });        //OJO
+      listMajors();
+      listMajorsTwo();
+      listMajorsThree();
+      listMajorsFour();
+      listMajorsFive();
+      listMajorsSix();
+    } else if (gapiInited && gisInited) {
+      tokenClient.requestAccessToken({ prompt: 'consent' });
     }
-}
+  }
 
-/**
- *  Sign in the user upon button click.
- */
-function handleAuthClick() {
-    tokenClient.callback = async (resp) => {
-        if (resp.error !== undefined) {
-            throw (resp);
-        }
-        //   document.getElementById('signout_button').style.visibility = 'visible';
-        //   document.getElementById('authorize_button').innerText = 'Refresh';
-        await listMajors();
-        await listMajorsTwo();
-        await listMajorsThree();
-        await listMajorsFour();
-        await listMajorsFive();
-        await listMajorsSix();
-    };
-
-    if (gapi.client.getToken() === null) {
-        // Prompt the user to select a Google Account and ask for consent to share their data
-        // when establishing a new session.
-        tokenClient.requestAccessToken({ prompt: 'consent' });
-    } else {
-        // Skip display of account chooser and consent dialog for an existing session.
-        tokenClient.requestAccessToken({ prompt: '' });
-    }
+function storeToken(token) {
+    localStorage.setItem('access_token', token);
+    //document.getElementById('signout_button').style.visibility = 'visible';
 }
 
 /**
  *  Sign out the user upon button click.
  */
-//   function handleSignoutClick() {
-//     const token = gapi.client.getToken();
-//     if (token !== null) {
-//       google.accounts.oauth2.revoke(token.access_token);
-//       gapi.client.setToken('');
-//       document.getElementById('content').innerText = '';
-//       document.getElementById('authorize_button').innerText = 'Authorize';
-//       document.getElementById('signout_button').style.visibility = 'hidden';
-//     }
-//   }
+function handleSignoutClick() {
+    localStorage.removeItem('access_token');
+    google.accounts.oauth2.revoke(gapi.client.getToken().access_token);
+    gapi.client.setToken('');
+    document.getElementById('content').innerText = '';
+    //document.getElementById('signout_button').style.visibility = 'hidden';
+}
 
 /**
  * Print the names and majors of students in a sample spreadsheet:
@@ -251,36 +244,36 @@ async function listMajors() {
             spreadsheetId: enlace,
             range: 'REPORTE!B26:D',
         });
-    } catch (err) {
-        document.getElementById('contentOne').innerText = err.message;
-        return;
-    }
-    const range = response.result;
-    if (!range || !range.values || range.values.length == 0) {
-        document.getElementById('contentOne').innerText = 'No values found.';
-        return;
-    }
-    console.log(range.values);
-    // console.log(`Name: ${range.values[10][0]}, Major: ${range.values[10][4]}`);
-    // Flatten to string to display
-    // const output = range.values.reduce(
-    //     (str, row) => `${str}${row[0]}, ${row[4]}\n`,
-    //     'Name, Major:\n');
-    // document.getElementById('content').innerText = output;
+        const range = response.result;
+        if (!range || !range.values || range.values.length == 0) {
+            document.getElementById('contentOne').innerText = 'No values found.';
+            return;
+        }
+        console.log(range.values);
+        // console.log(`Name: ${range.values[10][0]}, Major: ${range.values[10][4]}`);
+        // Flatten to string to display
+        // const output = range.values.reduce(
+        //     (str, row) => `${str}${row[0]}, ${row[4]}\n`,
+        //     'Name, Major:\n');
+        // document.getElementById('content').innerText = output;
 
-    // Iterate over each row in the range.values array
-    range.values.forEach(r => {
-        const hasValues = r.some(cell => cell !== undefined && cell !== null && cell !== '');
-        if (hasValues) {
-            const rowData = r.map(cell => cell !== undefined ? cell : '');
-            const row = `<tr>
+        // Iterate over each row in the range.values array
+        range.values.forEach(r => {
+            const hasValues = r.some(cell => cell !== undefined && cell !== null && cell !== '');
+            if (hasValues) {
+                const rowData = r.map(cell => cell !== undefined ? cell : '');
+                const row = `<tr>
             <td>${rowData[0]}</td>
             <td>${rowData[1]}</td>
             <td>${rowData[2]}</td>
             </tr>`;
-        tableBody.insertAdjacentHTML("beforeend", row);
-        }
-    });
+                tableBody.insertAdjacentHTML("beforeend", row);
+            }
+        });
+    } catch (err) {
+        document.getElementById('contentOne').innerText = err.message;
+        return;
+    }
 }
 
 async function listMajorsTwo() {
@@ -291,37 +284,37 @@ async function listMajorsTwo() {
             spreadsheetId: enlace,
             range: 'REPORTE!F26:I',
         });
-    } catch (err) {
-        document.getElementById('contentTwo').innerText = err.message;
-        return;
-    }
-    const range = response.result;
-    if (!range || !range.values || range.values.length == 0) {
-        document.getElementById('contentTwo').innerText = 'No values found.';
-        return;
-    }
-    console.log(range.values);
-    // console.log(`Name: ${range.values[10][0]}, Major: ${range.values[10][4]}`);
-    // Flatten to string to display
-    // const output = range.values.reduce(
-    //     (str, row) => `${str}${row[0]}, ${row[4]}\n`,
-    //     'Name, Major:\n');
-    // document.getElementById('content').innerText = output;
+        const range = response.result;
+        if (!range || !range.values || range.values.length == 0) {
+            document.getElementById('contentTwo').innerText = 'No values found.';
+            return;
+        }
+        console.log(range.values);
+        // console.log(`Name: ${range.values[10][0]}, Major: ${range.values[10][4]}`);
+        // Flatten to string to display
+        // const output = range.values.reduce(
+        //     (str, row) => `${str}${row[0]}, ${row[4]}\n`,
+        //     'Name, Major:\n');
+        // document.getElementById('content').innerText = output;
 
-    // Iterate over each row in the range.values array
-    range.values.forEach(r => {
-        const hasValues = r.some(cell => cell !== undefined && cell !== null && cell !== '');
-        if (hasValues) {
-            const rowData = r.map(cell => cell !== undefined ? cell : '');
-            const row = `<tr>
+        // Iterate over each row in the range.values array
+        range.values.forEach(r => {
+            const hasValues = r.some(cell => cell !== undefined && cell !== null && cell !== '');
+            if (hasValues) {
+                const rowData = r.map(cell => cell !== undefined ? cell : '');
+                const row = `<tr>
             <td>${rowData[0]}</td>
             <td>${rowData[1]}</td>
             <td>${rowData[2]}</td>
             <td>${rowData[3]}</td>
             </tr>`;
-        tableBodyTwo.insertAdjacentHTML("beforeend", row);
-        }
-    });
+                tableBodyTwo.insertAdjacentHTML("beforeend", row);
+            }
+        });
+    } catch (err) {
+        document.getElementById('contentTwo').innerText = err.message;
+        return;
+    }
 }
 
 async function listMajorsThree() {
@@ -332,25 +325,25 @@ async function listMajorsThree() {
             spreadsheetId: enlace,
             range: 'REPORTE!B61:C68',
         });
+        const range = response.result;
+        if (!range || !range.values || range.values.length == 0) {
+            document.getElementById('contentThree').innerText = 'No values found.';
+            return;
+        }
+        console.log(range.values);
+
+        // Iterate over each row in the range.values array
+        range.values.forEach(r => {
+            let row = `<tr>
+            <td>${r[0]}</td>
+            <td>${r[1]}</td>
+            </tr>`;
+            tableBodyThree.insertAdjacentHTML("beforeend", row);
+        });
     } catch (err) {
         document.getElementById('contentThree').innerText = err.message;
         return;
     }
-    const range = response.result;
-    if (!range || !range.values || range.values.length == 0) {
-        document.getElementById('contentThree').innerText = 'No values found.';
-        return;
-    }
-    console.log(range.values);
-
-    // Iterate over each row in the range.values array
-    range.values.forEach(r => {
-        let row = `<tr>
-            <td>${r[0]}</td>
-            <td>${r[1]}</td>
-            </tr>`;
-        tableBodyThree.insertAdjacentHTML("beforeend", row);
-    });
 }
 
 async function listMajorsFour() {
@@ -361,25 +354,25 @@ async function listMajorsFour() {
             spreadsheetId: enlace,
             range: 'REPORTE!F76:G86',
         });
+        const range = response.result;
+        if (!range || !range.values || range.values.length == 0) {
+            document.getElementById('contentFour').innerText = 'No values found.';
+            return;
+        }
+        console.log(range.values);
+
+        // Iterate over each row in the range.values array
+        range.values.forEach(r => {
+            let row = `<tr>
+            <td>${r[0]}</td>
+            <td>${r[1]}</td>
+            </tr>`;
+            tableBodyFour.insertAdjacentHTML("beforeend", row);
+        });
     } catch (err) {
         document.getElementById('contentFour').innerText = err.message;
         return;
     }
-    const range = response.result;
-    if (!range || !range.values || range.values.length == 0) {
-        document.getElementById('contentFour').innerText = 'No values found.';
-        return;
-    }
-    console.log(range.values);
-
-    // Iterate over each row in the range.values array
-    range.values.forEach(r => {
-        let row = `<tr>
-            <td>${r[0]}</td>
-            <td>${r[1]}</td>
-            </tr>`;
-        tableBodyFour.insertAdjacentHTML("beforeend", row);
-    });
 }
 
 async function listMajorsFive() {
@@ -392,98 +385,97 @@ async function listMajorsFive() {
             spreadsheetId: enlace,
             range: 'DATOS!Q15:AI26',
         });
+        const range = response.result;
+        if (!range || !range.values || range.values.length == 0) {
+            document.getElementById('contentFive').innerText = 'No values found.';
+            return;
+        }
+        // console.log(range.values);
+
+        // Iterate over each row in the range.values array
+        range.values.forEach(r => {
+            arrayOne.push(parseFloat(r[1].replace(/,/g, '')));
+            arrayTwo.push(parseFloat(r[9].replace(/,/g, '')));
+        });
+        console.log(arrayOne);
+        console.log(arrayTwo);
+
+        var ctxLine = document.getElementById('lineChart').getContext('2d');
+        var lineChart = new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                datasets: [{
+                    label: 'Suma de INGRESOS COBRADOS',
+                    data: arrayOne,
+                    borderColor: 'blue',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Suma de GASTOS PAGADOS',
+                    data: arrayTwo,
+                    borderColor: 'yellow',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                // legend: {
+                //     display: false // Oculta la leyenda completa
+                // },
+                responsive: true,
+                maintainAspectRatio: false
+                // scales: {
+                //     y: {
+                //         beginAtZero: true,
+                //         suggestedMax: 70000 // Sugerir un rango máximo
+                //     }
+                // }
+            }
+        });
+
+        const suma1 = arrayOne.reduce((anterior, actual) => anterior + actual, 0);
+        const suma2 = arrayTwo.reduce((anterior, actual) => anterior + actual, 0);
+
+        console.log(suma1);
+        console.log(suma2);
+
+        var ctxBar = document.getElementById('barChart').getContext('2d');
+        var barChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Suma de INGRESOS COBRADOS', 'Suma de GASTOS PAGADOS'],
+                datasets: [{
+                    label: 'Suma de INGRESOS COBRADOS',
+                    data: [suma1, 0],
+                    backgroundColor: 'blue',
+                    //borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Suma de GASTOS PAGADOS',
+                    data: [0, suma2],
+                    backgroundColor: 'yellow', // Color de la segunda barra
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                responsive: false
+            }
+        });
     } catch (err) {
         document.getElementById('contentFive').innerText = err.message;
         return;
     }
-    const range = response.result;
-    if (!range || !range.values || range.values.length == 0) {
-        document.getElementById('contentFive').innerText = 'No values found.';
-        return;
-    }
-    // console.log(range.values);
-
-    // Iterate over each row in the range.values array
-    range.values.forEach(r => {
-        arrayOne.push(parseFloat(r[1].replace(/,/g, '')));
-        arrayTwo.push(parseFloat(r[9].replace(/,/g, '')));
-    });
-    console.log(arrayOne);
-    console.log(arrayTwo);
-
-    var ctxLine = document.getElementById('lineChart').getContext('2d');
-    var lineChart = new Chart(ctxLine, {
-        type: 'line',
-        data: {
-            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            datasets: [{
-                label: 'Suma de INGRESOS COBRADOS',
-                data: arrayOne,
-                borderColor: 'blue',
-                borderWidth: 1
-            },
-            {
-                label: 'Suma de GASTOS PAGADOS',
-                data: arrayTwo,
-                borderColor: 'yellow',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            // legend: {
-            //     display: false // Oculta la leyenda completa
-            // },
-            responsive: true,
-            maintainAspectRatio: false
-            // scales: {
-            //     y: {
-            //         beginAtZero: true,
-            //         suggestedMax: 70000 // Sugerir un rango máximo
-            //     }
-            // }
-        }
-    });
-
-    const suma1 = arrayOne.reduce((anterior, actual) => anterior + actual, 0);
-    const suma2 = arrayTwo.reduce((anterior, actual) => anterior + actual, 0);
-
-    console.log(suma1);
-    console.log(suma2);
-
-    var ctxBar = document.getElementById('barChart').getContext('2d');
-    var barChart = new Chart(ctxBar, {
-        type: 'bar',
-        data: {
-            labels: ['Suma de INGRESOS COBRADOS', 'Suma de GASTOS PAGADOS'],
-            datasets: [{
-                label: 'Suma de INGRESOS COBRADOS',
-                data: [suma1, 0],
-                backgroundColor: 'blue',
-                //borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
-            },
-            {
-                label: 'Suma de GASTOS PAGADOS',
-                data: [0, suma2],
-                backgroundColor: 'yellow', // Color de la segunda barra
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            responsive: false
-        }
-    });
-
 }
 
 async function listMajorsSix() {
@@ -497,68 +489,106 @@ async function listMajorsSix() {
             spreadsheetId: enlace,
             range: 'DATOS!B3:P14',
         });
+        const range = response.result;
+        if (!range || !range.values || range.values.length == 0) {
+            document.getElementById('contentSix').innerText = 'No values found.';
+            return;
+        }
+        // Iterate over each row in the range.values array
+        range.values.forEach(r => {
+            arrayOne.push(parseFloat(r[2].replace(/,/g, '')));  //ingresos cobrados
+            arrayTwo.push(parseFloat(r[5].replace(/,/g, '')));  //ISR impuestos pagados
+            arrayThree.push(parseFloat(r[8].replace(/,/g, '')));    //IVA impuestos pagados
+        });
+        console.log(arrayOne);
+        console.log(arrayTwo);
+        console.log(arrayThree);
+
+        const suma1 = arrayOne.reduce((anterior, actual) => anterior + actual, 0);
+        const suma2 = arrayTwo.reduce((anterior, actual) => anterior + actual, 0);
+        const suma3 = arrayThree.reduce((anterior, actual) => anterior + actual, 0);
+
+        console.log(suma1);
+        console.log(suma2);
+        console.log(suma3);
+
+        var ctxPie = document.getElementById('pieChart').getContext('2d');
+        var pieChart = new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: ['IVA Suma de IMPUESTOS PAGADOS', 'ISR Suma de INGRESOS COBRADOS', 'ISR Suma de IMPUESTOS PAGADOS'],
+                datasets: [{
+                    label: 'Dataset 1',
+                    data: [suma3, suma1, suma2],
+                    backgroundColor: [
+                        'red',
+                        'green',
+                        'orange'
+                    ]
+                }]
+            },
+            options: {
+                // plugins: {
+                //     legend: {
+                //         position: 'down'
+                //     }
+                // },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                responsive: false
+                // Configuración para la gráfica en 3D
+                // plugins: {
+                //     chartJsPlugin3d: {
+                //         enabled: true,
+                //         alpha: 45,
+                //         beta: 0
+                //     }
+                // }
+            }
+        });
     } catch (err) {
         document.getElementById('contentSix').innerText = err.message;
         return;
     }
-    const range = response.result;
-    if (!range || !range.values || range.values.length == 0) {
-        document.getElementById('contentSix').innerText = 'No values found.';
-        return;
-    }
-    // Iterate over each row in the range.values array
-    range.values.forEach(r => {
-        arrayOne.push(parseFloat(r[2].replace(/,/g, '')));  //ingresos cobrados
-        arrayTwo.push(parseFloat(r[5].replace(/,/g, '')));  //ISR impuestos pagados
-        arrayThree.push(parseFloat(r[8].replace(/,/g, '')));    //IVA impuestos pagados
-    });
-    console.log(arrayOne);
-    console.log(arrayTwo);
-    console.log(arrayThree);
-
-    const suma1 = arrayOne.reduce((anterior, actual) => anterior + actual, 0);
-    const suma2 = arrayTwo.reduce((anterior, actual) => anterior + actual, 0);
-    const suma3 = arrayThree.reduce((anterior, actual) => anterior + actual, 0);
-
-    console.log(suma1);
-    console.log(suma2);
-    console.log(suma3);
-
-    var ctxPie = document.getElementById('pieChart').getContext('2d');
-    var pieChart = new Chart(ctxPie, {
-        type: 'pie',
-        data: {
-            labels: ['IVA Suma de IMPUESTOS PAGADOS', 'ISR Suma de INGRESOS COBRADOS', 'ISR Suma de IMPUESTOS PAGADOS'],
-            datasets: [{
-                label: 'Dataset 1',
-                data: [suma3, suma1, suma2],
-                backgroundColor: [
-                    'red',
-                    'green',
-                    'orange'
-                ]
-            }]
-        },
-        options: {
-            // plugins: {
-            //     legend: {
-            //         position: 'down'
-            //     }
-            // },
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            responsive: false
-            // Configuración para la gráfica en 3D
-            // plugins: {
-            //     chartJsPlugin3d: {
-            //         enabled: true,
-            //         alpha: 45,
-            //         beta: 0
-            //     }
-            // }
-        }
-    });
 }
+
+/**
+ * Enables user interaction after all libraries are loaded.
+ */
+// function maybeEnableButtons() {
+//     if (gapiInited && gisInited) {
+//         //document.getElementById('authorize_button').style.visibility = 'visible';
+//         handleAuthClick();
+//     }
+// }
+
+/**
+ *  Sign in the user upon button click.
+ */
+// function handleAuthClick() {
+//     tokenClient.callback = async (resp) => {
+//         if (resp.error !== undefined) {
+//             throw (resp);
+//         }
+//         //   document.getElementById('signout_button').style.visibility = 'visible';
+//         //   document.getElementById('authorize_button').innerText = 'Refresh';
+//         await listMajors();
+//         await listMajorsTwo();
+//         await listMajorsThree();
+//         await listMajorsFour();
+//         await listMajorsFive();
+//         await listMajorsSix();
+//     };
+
+//     if (gapi.client.getToken() === null) {
+//         // Prompt the user to select a Google Account and ask for consent to share their data
+//         // when establishing a new session.
+//         tokenClient.requestAccessToken({ prompt: 'consent' });
+//     } else {
+//         // Skip display of account chooser and consent dialog for an existing session.
+//         tokenClient.requestAccessToken({ prompt: '' });
+//     }
+// }

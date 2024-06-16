@@ -60,7 +60,28 @@ logOut.addEventListener("click", function(event) {
     // localStorage.removeItem("usuario");
     // localStorage.removeItem("contraseña");
     window.location.href = "../html/login.html";
+    handleSignoutClick();
 });
+
+/**
+ * Callback after Google Identity Services are loaded.
+ */
+function gisLoaded() {
+    tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: async (response) => {
+            if (response.error !== undefined) {
+              throw (response);
+            }
+            storeToken(response.access_token);
+            await listMajors();
+          }, // defined later
+    });
+    gisInited = true;
+    checkToken();
+    //maybeEnableButtons();
+}
 
 /**
  * Callback after api.js is loaded.
@@ -79,68 +100,35 @@ async function initializeGapiClient() {
         discoveryDocs: [DISCOVERY_DOC],
     });
     gapiInited = true;
-    maybeEnableButtons();
+    //maybeEnableButtons();
+    checkToken();
 }
 
-/**
- * Callback after Google Identity Services are loaded.
- */
-function gisLoaded() {
-    tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: CLIENT_ID,
-        scope: SCOPES,
-        callback: '', // defined later
-    });
-    gisInited = true;
-    maybeEnableButtons();
-}
-
-/**
- * Enables user interaction after all libraries are loaded.
- */
-function maybeEnableButtons() {
-    if (gapiInited && gisInited) {
-        //document.getElementById('authorize_button').style.visibility = 'visible';
-        handleAuthClick();
+function checkToken() {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      gapi.client.setToken({ access_token: token });        //OJO
+      listMajors();
+    } else if (gapiInited && gisInited) {
+      tokenClient.requestAccessToken({ prompt: 'consent' });
     }
-}
+  }
 
-/**
- *  Sign in the user upon button click.
- */
-function handleAuthClick() {
-    tokenClient.callback = async (resp) => {
-        if (resp.error !== undefined) {
-            throw (resp);
-        }
-        //   document.getElementById('signout_button').style.visibility = 'visible';
-        //   document.getElementById('authorize_button').innerText = 'Refresh';
-        await listMajors();
-    };
-
-    if (gapi.client.getToken() === null) {
-        // Prompt the user to select a Google Account and ask for consent to share their data
-        // when establishing a new session.
-        tokenClient.requestAccessToken({ prompt: 'consent' });
-    } else {
-        // Skip display of account chooser and consent dialog for an existing session.
-        tokenClient.requestAccessToken({ prompt: '' });
-    }
+function storeToken(token) {
+    localStorage.setItem('access_token', token);
+    //document.getElementById('signout_button').style.visibility = 'visible';
 }
 
 /**
  *  Sign out the user upon button click.
  */
-//   function handleSignoutClick() {
-//     const token = gapi.client.getToken();
-//     if (token !== null) {
-//       google.accounts.oauth2.revoke(token.access_token);
-//       gapi.client.setToken('');
-//       document.getElementById('content').innerText = '';
-//       document.getElementById('authorize_button').innerText = 'Authorize';
-//       document.getElementById('signout_button').style.visibility = 'hidden';
-//     }
-//   }
+function handleSignoutClick() {
+    localStorage.removeItem('access_token');
+    google.accounts.oauth2.revoke(gapi.client.getToken().access_token);
+    gapi.client.setToken('');
+    document.getElementById('content').innerText = '';
+    //document.getElementById('signout_button').style.visibility = 'hidden';
+}
 
 /**
  * Print the names and majors of students in a sample spreadsheet:
@@ -154,29 +142,25 @@ async function listMajors() {
             spreadsheetId: enlace,
             range: 'Cuentas por pagar!B3:I',
         });
-    } catch (err) {
-        document.getElementById('content').innerText = err.message;
-        return;
-    }
-    const range = response.result;
-    if (!range || !range.values || range.values.length == 0) {
-        document.getElementById('content').innerText = 'No values found.';
-        return;
-    }
-    console.log(range.values);
-    // console.log(`Name: ${range.values[10][0]}, Major: ${range.values[10][4]}`);
-    // Flatten to string to display
-    // const output = range.values.reduce(
-    //     (str, row) => `${str}${row[0]}, ${row[4]}\n`,
-    //     'Name, Major:\n');
-    // document.getElementById('content').innerText = output;
+        const range = response.result;
+        if (!range || !range.values || range.values.length == 0) {
+            document.getElementById('content').innerText = 'No values found.';
+            return;
+        }
+        console.log(range.values);
+        // console.log(`Name: ${range.values[10][0]}, Major: ${range.values[10][4]}`);
+        // Flatten to string to display
+        // const output = range.values.reduce(
+        //     (str, row) => `${str}${row[0]}, ${row[4]}\n`,
+        //     'Name, Major:\n');
+        // document.getElementById('content').innerText = output;
 
-    // Iterate over each row in the range.values array
-    range.values.forEach(r => {
-        const hasValues = r.some(cell => cell !== undefined && cell !== null && cell !== '');
-        if (hasValues) {
-            const rowData = r.map(cell => cell !== undefined ? cell : '');
-            const row = `<tr>
+        // Iterate over each row in the range.values array
+        range.values.forEach(r => {
+            const hasValues = r.some(cell => cell !== undefined && cell !== null && cell !== '');
+            if (hasValues) {
+                const rowData = r.map(cell => cell !== undefined ? cell : '');
+                const row = `<tr>
             <td>${rowData[0]}</td>
             <td>${rowData[1]}</td>
             <td>${rowData[2]}</td>
@@ -186,7 +170,44 @@ async function listMajors() {
             <td>${rowData[6]}</td>
             <td>${rowData[7]}</td>
             </tr>`;
-        tableBody.insertAdjacentHTML("beforeend", row);
-        }
-    });
+                tableBody.insertAdjacentHTML("beforeend", row);
+            }
+        });
+    } catch (err) {
+        document.getElementById('content').innerText = err.message;
+        return;
+    }
 }
+
+/**
+ * Enables user interaction after all libraries are loaded.
+ */
+// function maybeEnableButtons() {
+//     if (gapiInited && gisInited) {
+//         //document.getElementById('authorize_button').style.visibility = 'visible';
+//         handleAuthClick();
+//     }
+// }
+
+/**
+ *  Sign in the user upon button click.
+ */
+// function handleAuthClick() {
+//     tokenClient.callback = async (resp) => {
+//         if (resp.error !== undefined) {
+//             throw (resp);
+//         }
+//         //   document.getElementById('signout_button').style.visibility = 'visible';
+//         //   document.getElementById('authorize_button').innerText = 'Refresh';
+//         await listMajors();
+//     };
+
+//     if (gapi.client.getToken() === null) {
+//         // Prompt the user to select a Google Account and ask for consent to share their data
+//         // when establishing a new session.
+//         tokenClient.requestAccessToken({ prompt: 'consent' });
+//     } else {
+//         // Skip display of account chooser and consent dialog for an existing session.
+//         tokenClient.requestAccessToken({ prompt: '' });
+//     }
+// }

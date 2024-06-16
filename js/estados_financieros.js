@@ -67,7 +67,31 @@ logOut.addEventListener("click", function(event) {
     // localStorage.removeItem("usuario");
     // localStorage.removeItem("contraseña");
     window.location.href = "../html/login.html";
+    handleSignoutClick();
 });
+
+/**
+ * Callback after Google Identity Services are loaded.
+ */
+function gisLoaded() {
+    tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: async (response) => {
+            if (response.error !== undefined) {
+              throw (response);
+            }
+            storeToken(response.access_token);
+            await listMajors();
+            await listMajorsTwo();
+            await listMajorsThree();
+            await listMajorsFour();
+          }, // defined later
+    });
+    gisInited = true;
+    //maybeEnableButtons();
+    checkToken();
+}
 
 /**
  * Callback after api.js is loaded.
@@ -86,71 +110,37 @@ async function initializeGapiClient() {
         discoveryDocs: [DISCOVERY_DOC],
     });
     gapiInited = true;
-    maybeEnableButtons();
+    //maybeEnableButtons();
+    checkToken();
 }
 
-/**
- * Callback after Google Identity Services are loaded.
- */
-function gisLoaded() {
-    tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: CLIENT_ID,
-        scope: SCOPES,
-        callback: '', // defined later
-    });
-    gisInited = true;
-    maybeEnableButtons();
-}
-
-/**
- * Enables user interaction after all libraries are loaded.
- */
-function maybeEnableButtons() {
-    if (gapiInited && gisInited) {
-        //document.getElementById('authorize_button').style.visibility = 'visible';
-        handleAuthClick();
+function checkToken() {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      gapi.client.setToken({ access_token: token });        //OJO
+      listMajors();
+      listMajorsTwo();
+      listMajorsThree();
+      listMajorsFour();
+    } else if (gapiInited && gisInited) {
+      tokenClient.requestAccessToken({ prompt: 'consent' });
     }
-}
+  }
 
-/**
- *  Sign in the user upon button click.
- */
-function handleAuthClick() {
-    tokenClient.callback = async (resp) => {
-        if (resp.error !== undefined) {
-            throw (resp);
-        }
-        //   document.getElementById('signout_button').style.visibility = 'visible';
-        //   document.getElementById('authorize_button').innerText = 'Refresh';
-        await listMajors();
-        await listMajorsTwo();
-        await listMajorsThree();
-        await listMajorsFour();
-    };
-
-    if (gapi.client.getToken() === null) {
-        // Prompt the user to select a Google Account and ask for consent to share their data
-        // when establishing a new session.
-        tokenClient.requestAccessToken({ prompt: 'consent' });
-    } else {
-        // Skip display of account chooser and consent dialog for an existing session.
-        tokenClient.requestAccessToken({ prompt: '' });
-    }
+function storeToken(token) {
+    localStorage.setItem('access_token', token);
+    //document.getElementById('signout_button').style.visibility = 'visible';
 }
 
 /**
  *  Sign out the user upon button click.
  */
-//   function handleSignoutClick() {
-//     const token = gapi.client.getToken();
-//     if (token !== null) {
-//       google.accounts.oauth2.revoke(token.access_token);
-//       gapi.client.setToken('');
-//       document.getElementById('content').innerText = '';
-//       document.getElementById('authorize_button').innerText = 'Authorize';
-//       document.getElementById('signout_button').style.visibility = 'hidden';
-//     }
-//   }
+function handleSignoutClick() {
+    localStorage.removeItem('access_token');
+    google.accounts.oauth2.revoke(gapi.client.getToken().access_token);
+    gapi.client.setToken('');
+    document.getElementById('content').innerText = '';
+}
 
 /**
  * Print the names and majors of students in a sample spreadsheet:
@@ -164,31 +154,31 @@ async function listMajors() {
             spreadsheetId: enlace,
             range: 'Estados Financieros!B3:C47',
         });
+        const range = response.result;
+        if (!range || !range.values || range.values.length == 0) {
+            document.getElementById('content').innerText = 'No values found.';
+            return;
+        }
+        console.log(range.values);
+        // console.log(`Name: ${range.values[10][0]}, Major: ${range.values[10][4]}`);
+        // Flatten to string to display
+        // const output = range.values.reduce(
+        //     (str, row) => `${str}${row[0]}, ${row[4]}\n`,
+        //     'Name, Major:\n');
+        // document.getElementById('content').innerText = output;
+
+        // Iterate over each row in the range.values array
+        range.values.forEach(r => {
+            let row = `<tr>
+            <td>${r[0]}</td>
+            <td>${r[1]}</td>
+            </tr>`;
+            tableBody.insertAdjacentHTML("beforeend", row);
+        });
     } catch (err) {
         document.getElementById('content').innerText = err.message;
         return;
     }
-    const range = response.result;
-    if (!range || !range.values || range.values.length == 0) {
-        document.getElementById('content').innerText = 'No values found.';
-        return;
-    }
-    console.log(range.values);
-    // console.log(`Name: ${range.values[10][0]}, Major: ${range.values[10][4]}`);
-    // Flatten to string to display
-    // const output = range.values.reduce(
-    //     (str, row) => `${str}${row[0]}, ${row[4]}\n`,
-    //     'Name, Major:\n');
-    // document.getElementById('content').innerText = output;
-
-    // Iterate over each row in the range.values array
-    range.values.forEach(r => {
-        let row = `<tr>
-            <td>${r[0]}</td>
-            <td>${r[1]}</td>
-            </tr>`;
-        tableBody.insertAdjacentHTML("beforeend", row);
-    });
 }
 
 async function listMajorsTwo() {
@@ -199,31 +189,31 @@ async function listMajorsTwo() {
             spreadsheetId: enlace,
             range: 'Estados Financieros!F3:G46',
         });
+        const range = response.result;
+        if (!range || !range.values || range.values.length == 0) {
+            document.getElementById('contentTwo').innerText = 'No values found.';
+            return;
+        }
+        console.log(range.values);
+        // console.log(`Name: ${range.values[10][0]}, Major: ${range.values[10][4]}`);
+        // Flatten to string to display
+        // const output = range.values.reduce(
+        //     (str, row) => `${str}${row[0]}, ${row[4]}\n`,
+        //     'Name, Major:\n');
+        // document.getElementById('content').innerText = output;
+
+        // Iterate over each row in the range.values array
+        range.values.forEach(r => {
+            let row = `<tr>
+            <td>${r[0]}</td>
+            <td>${r[1]}</td>
+            </tr>`;
+            tableBodyTwo.insertAdjacentHTML("beforeend", row);
+        });
     } catch (err) {
         document.getElementById('contentTwo').innerText = err.message;
         return;
     }
-    const range = response.result;
-    if (!range || !range.values || range.values.length == 0) {
-        document.getElementById('contentTwo').innerText = 'No values found.';
-        return;
-    }
-    console.log(range.values);
-    // console.log(`Name: ${range.values[10][0]}, Major: ${range.values[10][4]}`);
-    // Flatten to string to display
-    // const output = range.values.reduce(
-    //     (str, row) => `${str}${row[0]}, ${row[4]}\n`,
-    //     'Name, Major:\n');
-    // document.getElementById('content').innerText = output;
-
-    // Iterate over each row in the range.values array
-    range.values.forEach(r => {
-        let row = `<tr>
-            <td>${r[0]}</td>
-            <td>${r[1]}</td>
-            </tr>`;
-        tableBodyTwo.insertAdjacentHTML("beforeend", row);
-    });
 }
 
 async function listMajorsThree() {
@@ -234,26 +224,22 @@ async function listMajorsThree() {
             spreadsheetId: enlace,
             range: 'Estados Financieros!J3:X50',
         });
-    } catch (err) {
-        document.getElementById('contentThree').innerText = err.message;
-        return;
-    }
-    const range = response.result;
-    if (!range || !range.values || range.values.length == 0) {
-        document.getElementById('contentThree').innerText = 'No values found.';
-        return;
-    }
-    console.log(range.values);
-    // console.log(`Name: ${range.values[10][0]}, Major: ${range.values[10][4]}`);
-    // Flatten to string to display
-    // const output = range.values.reduce(
-    //     (str, row) => `${str}${row[0]}, ${row[4]}\n`,
-    //     'Name, Major:\n');
-    // document.getElementById('content').innerText = output;
+        const range = response.result;
+        if (!range || !range.values || range.values.length == 0) {
+            document.getElementById('contentThree').innerText = 'No values found.';
+            return;
+        }
+        console.log(range.values);
+        // console.log(`Name: ${range.values[10][0]}, Major: ${range.values[10][4]}`);
+        // Flatten to string to display
+        // const output = range.values.reduce(
+        //     (str, row) => `${str}${row[0]}, ${row[4]}\n`,
+        //     'Name, Major:\n');
+        // document.getElementById('content').innerText = output;
 
-    // Iterate over each row in the range.values array
-    range.values.forEach(r => {
-        let row = `<tr>
+        // Iterate over each row in the range.values array
+        range.values.forEach(r => {
+            let row = `<tr>
             <td>${r[0]}</td>
             <td>${r[1]}</td>
             <td>${r[2]}</td>
@@ -270,8 +256,12 @@ async function listMajorsThree() {
             <td>${r[13]}</td>
             <td>${r[14]}</td>
             </tr>`;
-        tableBodyThree.insertAdjacentHTML("beforeend", row);
-    });
+            tableBodyThree.insertAdjacentHTML("beforeend", row);
+        });
+    } catch (err) {
+        document.getElementById('contentThree').innerText = err.message;
+        return;
+    }
 }
 
 async function listMajorsFour() {
@@ -282,31 +272,67 @@ async function listMajorsFour() {
             spreadsheetId: enlace,
             range: 'Estados Financieros!AA3:AD26',
         });
-    } catch (err) {
-        document.getElementById('contentFour').innerText = err.message;
-        return;
-    }
-    const range = response.result;
-    if (!range || !range.values || range.values.length == 0) {
-        document.getElementById('contentFour').innerText = 'No values found.';
-        return;
-    }
-    console.log(range.values);
-    // console.log(`Name: ${range.values[10][0]}, Major: ${range.values[10][4]}`);
-    // Flatten to string to display
-    // const output = range.values.reduce(
-    //     (str, row) => `${str}${row[0]}, ${row[4]}\n`,
-    //     'Name, Major:\n');
-    // document.getElementById('content').innerText = output;
+        const range = response.result;
+        if (!range || !range.values || range.values.length == 0) {
+            document.getElementById('contentFour').innerText = 'No values found.';
+            return;
+        }
+        console.log(range.values);
+        // console.log(`Name: ${range.values[10][0]}, Major: ${range.values[10][4]}`);
+        // Flatten to string to display
+        // const output = range.values.reduce(
+        //     (str, row) => `${str}${row[0]}, ${row[4]}\n`,
+        //     'Name, Major:\n');
+        // document.getElementById('content').innerText = output;
 
-    // Iterate over each row in the range.values array
-    range.values.forEach(r => {
-        let row = `<tr>
+        // Iterate over each row in the range.values array
+        range.values.forEach(r => {
+            let row = `<tr>
             <td>${r[0]}</td>
             <td>${r[1]}</td>
             <td>${r[2]}</td>
             <td>${r[3]}</td>
             </tr>`;
-        tableBodyFour.insertAdjacentHTML("beforeend", row);
-    });
+            tableBodyFour.insertAdjacentHTML("beforeend", row);
+        });
+    } catch (err) {
+        document.getElementById('contentFour').innerText = err.message;
+        return;
+    }
 }
+
+/**
+ * Enables user interaction after all libraries are loaded.
+ */
+// function maybeEnableButtons() {
+//     if (gapiInited && gisInited) {
+//         //document.getElementById('authorize_button').style.visibility = 'visible';
+//         handleAuthClick();
+//     }
+// }
+
+/**
+ *  Sign in the user upon button click.
+ */
+// function handleAuthClick() {
+//     tokenClient.callback = async (resp) => {
+//         if (resp.error !== undefined) {
+//             throw (resp);
+//         }
+//         //   document.getElementById('signout_button').style.visibility = 'visible';
+//         //   document.getElementById('authorize_button').innerText = 'Refresh';
+//         await listMajors();
+//         await listMajorsTwo();
+//         await listMajorsThree();
+//         await listMajorsFour();
+//     };
+
+//     if (gapi.client.getToken() === null) {
+//         // Prompt the user to select a Google Account and ask for consent to share their data
+//         // when establishing a new session.
+//         tokenClient.requestAccessToken({ prompt: 'consent' });
+//     } else {
+//         // Skip display of account chooser and consent dialog for an existing session.
+//         tokenClient.requestAccessToken({ prompt: '' });
+//     }
+// }
