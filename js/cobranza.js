@@ -206,8 +206,11 @@ async function listMajors() {
             arrayOne.push(parseFloat(rowData[4].replace(/,/g, '')));
             arrayTwo.push(parseFloat(rowData[5].replace(/,/g, '')));
             arrayThree.push(rowData[0]);
+            //console.log(rowData);
         }
+        //console.log(rowData);
     });
+    console.log("================================");
     console.log(arrayThree);
     console.log(arrayOne);
     console.log(arrayTwo);
