@@ -59,7 +59,7 @@ logOut.addEventListener("click", function(event) {
     localStorage.removeItem("enlace");
     // localStorage.removeItem("usuario");
     // localStorage.removeItem("contraseña");
-    window.location.href = "../html/login.html";
+    window.location.href = "../index.html";
     handleSignoutClick();
 });
 

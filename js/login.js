@@ -137,7 +137,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
             console.log("Acceso permitido!!! :D");
             // window.alert("Acceso permitido");
             //handleAuthClick();
-            window.location.href = "../index.html";
+            window.location.href = "../html/inicio.html";
         }else{
             window.alert("No existe el usuario, o la contraseña es incorrecta");
             console.log("Not existing user");
