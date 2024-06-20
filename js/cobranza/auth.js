@@ -22,32 +22,11 @@ document.getElementById("gapi").addEventListener("load", gapiLoaded);
 document.getElementById("gis").addEventListener("load", gisLoaded);
 
 /**
- * Callback after Google Identity Services are loaded.
- */
-function gisLoaded() {
-    tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: CLIENT_ID,
-        scope: SCOPES,
-        callback: async (response) => {
-            if (response.error !== undefined) {
-              throw (response);
-            }
-            storeToken(response.access_token);
-            await listMajors();//primero la función de sheets.js
-            // actualizarTabla();
-            // getChartOne();
-            // getChartTwo();//después la función de cobranza.js
-          }, // defined later
-    });
-    gisInited = true;
-    checkToken();
-}
-
-/**
  * Callback after api.js is loaded.
  */
 function gapiLoaded() {
     gapi.load('client', initializeGapiClient);
+    console.log("gapi was loaded");
 }
 
 /**
@@ -60,25 +39,67 @@ async function initializeGapiClient() {
         discoveryDocs: [DISCOVERY_DOC],
     });
     gapiInited = true;
+    console.log("initializeGapiClient()");
+    checkToken();
+}
+
+/**
+ * Callback after Google Identity Services are loaded.
+ */
+function gisLoaded() {
+    tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: async (response) => {
+            if (response.error !== undefined) {
+              throw (response);
+            }
+            storeToken(response.access_token);
+            //await listMajors();
+        },
+    });
+    gisInited = true;
+    console.log("gisLoaded()");
     checkToken();
 }
 
 function checkToken() {
     const token = localStorage.getItem('access_token');
     if (token) {
-        gapi.client.setToken({ access_token: token });        //OJO
-        listMajors();
-        // actualizarTabla();
-        // getChartOne();
-        // getChartTwo();//después la función de cobranza.js
+        gapi.client.setToken({ access_token: token });
+        //listMajors();
+        console.log("go to listMajors()");
     } else if (gapiInited && gisInited) {
-        tokenClient.requestAccessToken({ prompt: 'consent' });
+        console.log("go to handleAuthClick()");
+        handleAuthClick();
     }
+    console.log("checkToken()");
 }
 
 function storeToken(token) {
     localStorage.setItem('access_token', token);
-    //document.getElementById('signout_button').style.visibility = 'visible';
+    console.log("Token was stored");
+}
+
+function handleAuthClick() {
+    tokenClient.callback = async (resp) => {
+        if (resp.error !== undefined) {
+            throw (resp);
+        }
+        storeToken(resp.access_token);
+        console.log("await listMajors()");
+        //await listMajors();
+    };
+
+    if (gapi.client.getToken() === null) {
+        // Prompt the user to select a Google Account and ask for consent to share their data
+        // when establishing a new session.
+        tokenClient.requestAccessToken({ prompt: 'consent' });
+    } else {
+        // Skip display of account chooser and consent dialog for an existing session.
+        tokenClient.requestAccessToken({ prompt: '' });
+    }
+    console.log("handleAuthClick()");
 }
 
 /**
@@ -89,13 +110,4 @@ function handleSignoutClick() {
     google.accounts.oauth2.revoke(gapi.client.getToken().access_token);
     gapi.client.setToken('');
     document.getElementById('content').innerText = '';
-    //document.getElementById('signout_button').style.visibility = 'hidden';
-    // const token = gapi.client.getToken();
-    // if (token !== null) {
-    //     google.accounts.oauth2.revoke(token.access_token);
-    //     gapi.client.setToken('');
-    //     document.getElementById('content').innerText = '';
-    //     document.getElementById('authorize_button').innerText = 'Authorize';
-    //     document.getElementById('signout_button').style.visibility = 'hidden';
-    // }
 }
