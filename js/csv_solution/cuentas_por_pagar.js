@@ -2,6 +2,7 @@ let nombre = "";
 let enlace = "";
 let user_name = document.getElementById("user_name");
 let logOut = document.getElementById("logOut");
+const url = '../../src/data/a_rosas/cuentas_por_pagar.csv';
 
 // Get the table body element
 const tableBody = document.getElementById('tableOne').getElementsByTagName('tbody')[0];
@@ -27,20 +28,31 @@ logOut.addEventListener("click", function(event) {
     window.location.href = "../../index.html";
 });
 
-range.values.forEach(r => {
-    const hasValues = r.some(cell => cell !== undefined && cell !== null && cell !== '');
-    if (hasValues) {
-        const rowData = r.map(cell => cell !== undefined ? cell : '');
-        const row = `<tr>
-    <td>${rowData[0]}</td>
-    <td>${rowData[1]}</td>
-    <td>${rowData[2]}</td>
-    <td>${rowData[3]}</td>
-    <td>${rowData[4]}</td>
-    <td>${rowData[5]}</td>
-    <td>${rowData[6]}</td>
-    <td>${rowData[7]}</td>
-    </tr>`;
-        tableBody.insertAdjacentHTML("beforeend", row);
-    }
-});
+fetch(url)
+    .then(response => response.text())
+    .then(data => {
+        // Dividir el archivo CSV en filas
+        const rows = data.split('\n');
+        console.log(rows)
+        //Procesar cada fila (excepto la primera, que contiene los nombres de las columnas)
+        for (let i = 1; i < (rows.length-1); i++) {
+            const row = rows[i].split(',');
+            //rows.length
+            console.log(row);
+            const fila = `<tr>
+            <td>${row[0]}</td>
+            <td>${row[1]}</td>
+            <td>${row[2]}</td>
+            <td>${row[3]}</td>
+            <td>${row[4]}</td>
+            <td>${row[5]}</td>
+            <td>${row[6]}</td>
+            <td>${row[7]}</td>
+            </tr>`;
+            tableBody.insertAdjacentHTML("beforeend", fila);
+        }
+
+    })
+    .catch(error => {
+        console.error('Error al cargar el archivo CSV:', error);
+    });
