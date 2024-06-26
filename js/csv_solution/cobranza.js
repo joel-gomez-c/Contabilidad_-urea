@@ -3,7 +3,7 @@ let nombre = "";
 let enlace = "";
 let user_name = document.getElementById("user_name");
 let logOut = document.getElementById("logOut");
-const url = '../../src/data/a_rosas/cobranza.csv';
+//const url = '../../src/data/a_rosas/cobranza.csv';
 
 let arrayOne = [21272.16, 16508.16, 1600.00, 1328.00, 1120.00, 1103.45, 593.10, 43524.87];
 let arrayTwo = [154223.16, 107388.99, 10408.33, 8638.91, 7285.83, 8000.00, 4300.00, 300245.22];
@@ -69,7 +69,7 @@ function generateRandomColors(dataLength) {
 //     });
 // }
 
-fetch(url)
+fetch(String(this.localStorage.getItem("enlace")) + 'cobranza.csv')
     .then(response => response.text())
     .then(data => {
         // Dividir el archivo CSV en filas

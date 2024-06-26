@@ -3,7 +3,7 @@ let nombre = "";
 let enlace = "";
 let user_name = document.getElementById("user_name");
 let logOut = document.getElementById("logOut");
-const url = '../../src/data/a_rosas/bancos.csv';
+//const url = '../../src/data/a_rosas/bancos.csv';
 let arrayOne = [129647.08, 382093.92, 305202.20];
 let arrayTwo = [89442.40, 566119.79, 49920.00];
 let arrayThree = ['Crédito BBVA', 'Débito BBVA', 'Débito NU'];
@@ -43,7 +43,7 @@ logOut.addEventListener("click", function(event) {
     window.location.href = "../../index.html";
 });
 
-fetch(url)
+fetch(String(this.localStorage.getItem("enlace")) + 'bancos.csv')
     .then(response => response.text())
     .then(data => {
         // Dividir el archivo CSV en filas

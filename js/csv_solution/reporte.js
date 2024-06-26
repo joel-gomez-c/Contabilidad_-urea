@@ -7,9 +7,18 @@ let infoTwo = document.getElementById("infoTwo");
 let infoThree = document.getElementById("infoThree");
 let infoFour = document.getElementById("infoFour");
 let infoFive = document.getElementById("infoFive");
+// const url = '../../src/data/a_rosas/reporte.csv';
+// const urlTwo = '../../src/data/a_rosas/datos.csv';
 //let texto1 = document.getElementById("texto1");
 let arrayOne = [152951.00,21176.00,97903.45,89800.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
 let arrayTwo = [0.00,0.00,0.00,56154.12,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
+let arrayThree = [152951.00,21176.00,97903.45,89800.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
+let arrayFour = [0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
+let arrayFive = [3059.00,212.00,1958.00,1796.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
+
+var ctxPie = document.getElementById('pieChart').getContext('2d');
+var ctxLine = document.getElementById('lineChart').getContext('2d');
+var ctxBar = document.getElementById('barChart').getContext('2d');
 
 // Get the table body element
 const tableBody = document.getElementById('tableOne').getElementsByTagName('tbody')[0];
@@ -97,172 +106,222 @@ infoFive.addEventListener("click", function (event) {
     window.alert("Para ver el cálculo anual, selecciona de Enero - Diciembre");
 });
 
-range.values.forEach(r => {
-    const hasValues = r.some(cell => cell !== undefined && cell !== null && cell !== '');
-    if (hasValues) {
-        const rowData = r.map(cell => cell !== undefined ? cell : '');
-        const row = `<tr>
-    <td>${rowData[0]}</td>
-    <td>${rowData[1]}</td>
-    <td>${rowData[2]}</td>
-    </tr>`;
-        tableBody.insertAdjacentHTML("beforeend", row);
-    }
-});
+console.log(String(this.localStorage.getItem("enlace")) + 'reporte.csv');
+console.log(String(this.localStorage.getItem("enlace")) + 'datos.csv');
 
-range.values.forEach(r => {
-    const hasValues = r.some(cell => cell !== undefined && cell !== null && cell !== '');
-    if (hasValues) {
-        const rowData = r.map(cell => cell !== undefined ? cell : '');
-        const row = `<tr>
-    <td>${rowData[0]}</td>
-    <td>${rowData[1]}</td>
-    <td>${rowData[2]}</td>
-    <td>${rowData[3]}</td>
-    </tr>`;
-        tableBodyTwo.insertAdjacentHTML("beforeend", row);
-    }
-});
+fetch(String(this.localStorage.getItem("enlace")) + 'reporte.csv')
+    .then(response => response.text())
+    .then(data => {
+        // Dividir el archivo CSV en filas
+        const rows = data.split('\n');
 
-range.values.forEach(r => {
-    let row = `<tr>
-    <td>${r[0]}</td>
-    <td>${r[1]}</td>
-    </tr>`;
-    tableBodyThree.insertAdjacentHTML("beforeend", row);
-});
+        // Procesar cada fila (excepto la primera, que contiene los nombres de las columnas)
+        //console.log(rows);
+        for (let i = 3; i < 10; i++) {
+            const row = rows[i].split(',');
+            //rows.length
+            //console.log(row);
+            const fila = `<tr>
+        <td>${row[0]}</td>
+        <td>${row[1]}</td>
+        <td>${row[2]}</td>
+        </tr>`;
+            tableBody.insertAdjacentHTML("beforeend", fila);
+        }
 
-range.values.forEach(r => {
-    let row = `<tr>
-    <td>${r[0]}</td>
-    <td>${r[1]}</td>
-    </tr>`;
-    tableBodyFour.insertAdjacentHTML("beforeend", row);
-});
+        for (let i = 3; i < 26; i++) {
+            const row = rows[i].split(',');
+            //rows.length
+            const fila = `<tr>
+        <td>${row[4]}</td>
+        <td>${row[5]}</td>
+        <td>${row[6]}</td>
+        <td>${row[7]}</td>
+        <td>${row[8]}</td>
+        </tr>`;
+            tableBodyTwo.insertAdjacentHTML("beforeend", fila);
+        }
 
-range.values.forEach(r => {
-    arrayOne.push(parseFloat(r[1].replace(/,/g, '')));
-    arrayTwo.push(parseFloat(r[9].replace(/,/g, '')));
-});
+        for (let i = 38; i < 46; i++) {
+            const row = rows[i].split(',');
+            //rows.length
+            //console.log(row);
+            const fila = `<tr>
+        <td>${row[0]}</td>
+        <td>${row[1]}</td>
+        </tr>`;
+            tableBodyThree.insertAdjacentHTML("beforeend", fila);
+        }
 
-var ctxLine = document.getElementById('lineChart').getContext('2d');
-var lineChart = new Chart(ctxLine, {
-    type: 'line',
-    data: {
-        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        datasets: [{
-            label: 'Suma de INGRESOS COBRADOS',
-            data: arrayOne,
-            borderColor: 'blue',
-            borderWidth: 1
-        },
-        {
-            label: 'Suma de GASTOS PAGADOS',
-            data: arrayTwo,
-            borderColor: 'yellow',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        // legend: {
-        //     display: false // Oculta la leyenda completa
-        // },
-        responsive: true,
-        maintainAspectRatio: false
-        // scales: {
-        //     y: {
-        //         beginAtZero: true,
-        //         suggestedMax: 70000 // Sugerir un rango máximo
-        //     }
-        // }
-    }
-});
+        for (let i = 53; i < 64; i++) {
+            const row = rows[i].split(',');
+            //rows.length
+            //console.log(row);
+            const fila = `<tr>
+        <td>${row[4]}</td>
+        <td>${row[5]}</td>
+        </tr>`;
+            tableBodyFour.insertAdjacentHTML("beforeend", fila);
+        }
+    })
+    .catch(error => {
+        console.error('Error al cargar el archivo CSV:', error);
+    });
 
-const suma1 = arrayOne.reduce((anterior, actual) => anterior + actual, 0);
-const suma2 = arrayTwo.reduce((anterior, actual) => anterior + actual, 0);
+fetch(String(this.localStorage.getItem("enlace")) + 'datos.csv')
+    .then(response => response.text())
+    .then(data => {
+        // Dividir el archivo CSV en filas
+        const rows = data.split('\n');
+        arrayOne = [];
+        arrayTwo = [];
+        arrayThree = [];
+        arrayFour = [];
+        arrayFive = [];
+        // Procesar cada fila (excepto la primera, que contiene los nombres de las columnas)
+        console.log(rows);
+        for (let i = 14; i < 26; i++) {
+            const row = rows[i].split(',');
+            //rows.length
+            //console.log(row);
+            arrayOne.push(parseFloat(row[16]));
+            arrayTwo.push(parseFloat(row[24]));
+        }
+        // console.log(arrayOne);
+        // console.log(arrayTwo);
 
-var ctxBar = document.getElementById('barChart').getContext('2d');
-var barChart = new Chart(ctxBar, {
-    type: 'bar',
-    data: {
-        labels: ['Suma de INGRESOS COBRADOS', 'Suma de GASTOS PAGADOS'],
-        datasets: [{
-            label: 'Suma de INGRESOS COBRADOS',
-            data: [suma1, 0],
-            backgroundColor: 'blue',
-            //borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-        },
-        {
-            label: 'Suma de GASTOS PAGADOS',
-            data: [0, suma2],
-            backgroundColor: 'yellow', // Color de la segunda barra
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
+        var lineChart = new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                datasets: [{
+                    label: 'Suma de INGRESOS COBRADOS',
+                    data: arrayOne,
+                    borderColor: 'blue',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Suma de GASTOS PAGADOS',
+                    data: arrayTwo,
+                    borderColor: 'yellow',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                // legend: {
+                //     display: false // Oculta la leyenda completa
+                // },
+                responsive: true,
+                maintainAspectRatio: false
+                // scales: {
+                //     y: {
+                //         beginAtZero: true,
+                //         suggestedMax: 70000 // Sugerir un rango máximo
+                //     }
+                // }
             }
-        },
-        plugins: {
-            legend: {
-                display: false
+        });
+        
+        const suma1 = arrayOne.reduce((anterior, actual) => anterior + actual, 0);
+        const suma2 = arrayTwo.reduce((anterior, actual) => anterior + actual, 0);
+
+        // console.log(suma1);
+        // console.log(suma2);
+
+        var barChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Suma de INGRESOS COBRADOS', 'Suma de GASTOS PAGADOS'],
+                datasets: [{
+                    label: 'Suma de INGRESOS COBRADOS',
+                    data: [suma1, 0],
+                    backgroundColor: 'blue',
+                    //borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Suma de GASTOS PAGADOS',
+                    data: [0, suma2],
+                    backgroundColor: 'yellow', // Color de la segunda barra
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                responsive: false
             }
-        },
-        responsive: false
-    }
-});
+        });
 
-let arrayThree = [152951.00,21176.00,97903.45,89800.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
-let arrayFour = [0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
-let arrayFive = [3059.00,212.00,1958.00,1796.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
+        for (let i = 2; i < 14; i++) {
+            const row = rows[i].split(',');
+            //rows.length
+            //console.log(row);
+            arrayThree.push(parseFloat(row[2]));
+            arrayFour.push(parseFloat(row[5]));
+            arrayFive.push(parseFloat(row[8]));
+        }
 
-range.values.forEach(r => {
-    arrayThree.push(parseFloat(r[2].replace(/,/g, '')));  //ingresos cobrados
-    arrayFour.push(parseFloat(r[5].replace(/,/g, '')));  //ISR impuestos pagados
-    arrayFive.push(parseFloat(r[8].replace(/,/g, '')));    //IVA impuestos pagados
-});
+        // range.values.forEach(r => {
+        //     arrayThree.push(parseFloat(r[2].replace(/,/g, '')));  //ingresos cobrados
+        //     arrayFour.push(parseFloat(r[5].replace(/,/g, '')));  //ISR impuestos pagados
+        //     arrayFive.push(parseFloat(r[8].replace(/,/g, '')));    //IVA impuestos pagados
+        // });
 
-const suma3 = arrayThree.reduce((anterior, actual) => anterior + actual, 0);
-const suma4 = arrayFour.reduce((anterior, actual) => anterior + actual, 0);
-const suma5 = arrayFive.reduce((anterior, actual) => anterior + actual, 0);
+        const suma3 = arrayThree.reduce((anterior, actual) => anterior + actual, 0);
+        const suma4 = arrayFour.reduce((anterior, actual) => anterior + actual, 0);
+        const suma5 = arrayFive.reduce((anterior, actual) => anterior + actual, 0);
 
-var ctxPie = document.getElementById('pieChart').getContext('2d');
-var pieChart = new Chart(ctxPie, {
-    type: 'pie',
-    data: {
-        labels: ['IVA Suma de IMPUESTOS PAGADOS', 'ISR Suma de INGRESOS COBRADOS', 'ISR Suma de IMPUESTOS PAGADOS'],
-        datasets: [{
-            label: 'Dataset 1',
-            data: [suma5, suma3, suma4],
-            backgroundColor: [
-                'red',
-                'green',
-                'orange'
-            ]
-        }]
-    },
-    options: {
-        // plugins: {
-        //     legend: {
-        //         position: 'down'
-        //     }
-        // },
-        plugins: {
-            legend: {
-                display: false
+        // console.log(suma3);
+        // console.log(suma4);
+        // console.log(suma5);
+
+        var pieChart = new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: ['IVA Suma de IMPUESTOS PAGADOS', 'ISR Suma de INGRESOS COBRADOS', 'ISR Suma de IMPUESTOS PAGADOS'],
+                datasets: [{
+                    label: 'Dataset 1',
+                    data: [suma5, suma3, suma4],
+                    backgroundColor: [
+                        'red',
+                        'green',
+                        'orange'
+                    ]
+                }]
+            },
+            options: {
+                // plugins: {
+                //     legend: {
+                //         position: 'down'
+                //     }
+                // },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                responsive: false
+                // Configuración para la gráfica en 3D
+                // plugins: {
+                //     chartJsPlugin3d: {
+                //         enabled: true,
+                //         alpha: 45,
+                //         beta: 0
+                //     }
+                // }
             }
-        },
-        responsive: false
-        // Configuración para la gráfica en 3D
-        // plugins: {
-        //     chartJsPlugin3d: {
-        //         enabled: true,
-        //         alpha: 45,
-        //         beta: 0
-        //     }
-        // }
-    }
-});
+        });
+
+    })
+    .catch(error => {
+        console.error('Error al cargar el archivo CSV:', error);
+    });

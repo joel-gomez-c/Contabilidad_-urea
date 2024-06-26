@@ -2,7 +2,7 @@ let nombre = "";
 let enlace = "";
 let user_name = document.getElementById("user_name");
 let logOut = document.getElementById("logOut");
-const url = '../../src/data/a_rosas/cuentas_por_pagar.csv';
+//const url = '../../src/data/a_rosas/cuentas_por_pagar.csv';
 
 // Get the table body element
 const tableBody = document.getElementById('tableOne').getElementsByTagName('tbody')[0];
@@ -28,7 +28,7 @@ logOut.addEventListener("click", function(event) {
     window.location.href = "../../index.html";
 });
 
-fetch(url)
+fetch(String(this.localStorage.getItem("enlace")) + 'cuentas_por_pagar.csv')
     .then(response => response.text())
     .then(data => {
         // Dividir el archivo CSV en filas
