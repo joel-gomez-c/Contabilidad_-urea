@@ -77,12 +77,26 @@ fetch(String(this.localStorage.getItem("enlace")) + 'cobranza.csv')
         arrayOne = [];
         arrayTwo = [];
         arrayThree = [];
+        let tamano1 = 1;
+
+        if(String(this.localStorage.getItem("nombre"))=='Alejandro Rosas'){
+            tamano1 = 6;
+        }else if(String(this.localStorage.getItem("nombre"))=='Miguel Jarillo'){
+            tamano1 = 9;
+        }
+        else if(String(this.localStorage.getItem("nombre"))=='Monica Labra'){
+            tamano1 = 4;
+        }else if(String(this.localStorage.getItem("nombre"))=='Pilar Estrada'){
+            tamano1 = 3;
+        }else if(String(this.localStorage.getItem("nombre"))=='Rey Posadas'){
+            tamano1 = 9;
+        }
         // Procesar cada fila (excepto la primera, que contiene los nombres de las columnas)
         console.log(rows)
-        for (let i = 1; i < 6; i++) {
+        for (let i = 1; i < tamano1; i++) {
             const row = rows[i].split(',');
             //rows.length
-            console.log(row);
+            //console.log(row);
             const fila = `<tr>
         <td>${row[1]}</td>
         <td>${row[2]}</td>

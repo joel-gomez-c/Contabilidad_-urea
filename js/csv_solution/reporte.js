@@ -114,10 +114,29 @@ fetch(String(this.localStorage.getItem("enlace")) + 'reporte.csv')
     .then(data => {
         // Dividir el archivo CSV en filas
         const rows = data.split('\n');
+        let tamano1 = 1;
+        let tamano2 = 1;
 
+        if(String(this.localStorage.getItem("nombre"))=='Alejandro Rosas'){
+            tamano1 = 10;
+            tamano2 = 5;
+        }else if(String(this.localStorage.getItem("nombre"))=='Miguel Jarillo'){
+            tamano1 = 16;
+            tamano2 = 43;
+        }
+        else if(String(this.localStorage.getItem("nombre"))=='Monica Labra'){
+            tamano1 = 8;
+            tamano2 = 9;
+        }else if(String(this.localStorage.getItem("nombre"))=='Pilar Estrada'){
+            tamano1 = 7;
+            tamano2 = 6;
+        }else if(String(this.localStorage.getItem("nombre"))=='Rey Posadas'){
+            tamano1 = 13;
+            tamano2 = 9;
+        }
         // Procesar cada fila (excepto la primera, que contiene los nombres de las columnas)
         //console.log(rows);
-        for (let i = 3; i < 10; i++) {
+        for (let i = 3; i < tamano1; i++) {
             const row = rows[i].split(',');
             //rows.length
             //console.log(row);
@@ -129,7 +148,7 @@ fetch(String(this.localStorage.getItem("enlace")) + 'reporte.csv')
             tableBody.insertAdjacentHTML("beforeend", fila);
         }
 
-        for (let i = 3; i < 26; i++) {
+        for (let i = 3; i < tamano2; i++) {
             const row = rows[i].split(',');
             //rows.length
             const fila = `<tr>
