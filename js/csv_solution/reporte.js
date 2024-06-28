@@ -2,11 +2,11 @@ let nombre = "";
 let enlace = "";
 let user_name = document.getElementById("user_name");
 let logOut = document.getElementById("logOut");
-let infoOne = document.getElementById("infoOne");
+// let infoOne = document.getElementById("infoOne");
 let infoTwo = document.getElementById("infoTwo");
 let infoThree = document.getElementById("infoThree");
 let infoFour = document.getElementById("infoFour");
-let infoFive = document.getElementById("infoFive");
+// let infoFive = document.getElementById("infoFive");
 // const url = '../../src/data/a_rosas/reporte.csv';
 // const urlTwo = '../../src/data/a_rosas/datos.csv';
 //let texto1 = document.getElementById("texto1");
@@ -15,10 +15,17 @@ let arrayTwo = [0.00,0.00,0.00,56154.12,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00]
 let arrayThree = [152951.00,21176.00,97903.45,89800.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
 let arrayFour = [0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
 let arrayFive = [3059.00,212.00,1958.00,1796.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
+let arraySix = [0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
+let arraySeven = [0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
+let arrayEight = [0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
+let arrayNine = [0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
+let arrayTen = [0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
+let arrayEleven = [0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00];
 
 var ctxPie = document.getElementById('pieChart').getContext('2d');
 var ctxLine = document.getElementById('lineChart').getContext('2d');
 var ctxBar = document.getElementById('barChart').getContext('2d');
+var ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
 
 // Get the table body element
 const tableBody = document.getElementById('tableOne').getElementsByTagName('tbody')[0];
@@ -33,34 +40,6 @@ tableBodyThree.innerHTML = '';
 
 const tableBodyFour = document.getElementById('tableFour').getElementsByTagName('tbody')[0];
 tableBodyFour.innerHTML = '';
-
-var ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
-var doughnutChart = new Chart(ctxDoughnut, {
-    type: 'doughnut',
-    data: {
-        labels: ['Retenciones ISR', 'Actualizaciones y recargos', 'ISR', 'Retenciones IVA', 'IVA', 'Actualizaciones y recargos IVA'],
-        datasets: [{
-            label: 'Dataset 1',
-            data: [8, 0, 11, 69, 11, 1],
-            backgroundColor: [
-                'red',
-                'blue',
-                'yellow',
-                'green',
-                'purple',
-                'orange'
-            ]
-        }]
-    },
-    options: {
-        plugins: {
-            legend: {
-                display: false
-            }
-        },
-        responsive: false
-    }
-});
 
 window.addEventListener("load", function (event) {
     event.preventDefault();
@@ -81,10 +60,10 @@ logOut.addEventListener("click", function (event) {
     window.location.href = "../../index.html";
 });
 
-infoOne.addEventListener("click", function (event) {
-    event.preventDefault();
-    window.alert("Los meses controlan todas las tablas y gráficas, así que, puedes analizar todo el año o por meses separados");
-});
+// infoOne.addEventListener("click", function (event) {
+//     event.preventDefault();
+//     window.alert("Los meses controlan todas las tablas y gráficas, así que, puedes analizar todo el año o por meses separados");
+// });
 
 infoTwo.addEventListener("click", function (event) {
     event.preventDefault();
@@ -93,7 +72,7 @@ infoTwo.addEventListener("click", function (event) {
 
 infoThree.addEventListener("click", function (event) {
     event.preventDefault();
-    window.alert("En la gráfica podrás ver el % que representa del 100% de ingresos, los pagos de impuestos y el porcentaje que queda después de quitar impuestos (rojo)");
+    window.alert("En la gráfica podrás ver el % que representa del 100% de ingresos, los pagos de impuestos y el porcentaje que queda después de quitar impuestos (verde)");
 });
 
 infoFour.addEventListener("click", function (event) {
@@ -101,13 +80,13 @@ infoFour.addEventListener("click", function (event) {
     window.alert("En las dos tablas puedes ver el cálculo de cada mes, (ISR e IVA), Y el estatus de la declaración del siguiente mes.");
 });
 
-infoFive.addEventListener("click", function (event) {
-    event.preventDefault();
-    window.alert("Para ver el cálculo anual, selecciona de Enero - Diciembre");
-});
+// infoFive.addEventListener("click", function (event) {
+//     event.preventDefault();
+//     window.alert("Para ver el cálculo anual, selecciona de Enero - Diciembre");
+// });
 
-console.log(String(this.localStorage.getItem("enlace")) + 'reporte.csv');
-console.log(String(this.localStorage.getItem("enlace")) + 'datos.csv');
+// console.log(String(this.localStorage.getItem("enlace")) + 'reporte.csv');
+// console.log(String(this.localStorage.getItem("enlace")) + 'datos.csv');
 
 fetch(String(this.localStorage.getItem("enlace")) + 'reporte.csv')
     .then(response => response.text())
@@ -197,6 +176,12 @@ fetch(String(this.localStorage.getItem("enlace")) + 'datos.csv')
         arrayThree = [];
         arrayFour = [];
         arrayFive = [];
+        arraySix = [];
+        arraySeven = [];
+        arrayEight = [];
+        arrayNine = [];
+        arrayTen = [];
+        arrayEleven = [];
         // Procesar cada fila (excepto la primera, que contiene los nombres de las columnas)
         console.log(rows);
         for (let i = 14; i < 26; i++) {
@@ -205,6 +190,9 @@ fetch(String(this.localStorage.getItem("enlace")) + 'datos.csv')
             //console.log(row);
             arrayOne.push(parseFloat(row[16]));
             arrayTwo.push(parseFloat(row[24]));
+            arrayNine.push(parseFloat(row[28]));
+            arrayTen.push(parseFloat(row[31]));
+            arrayEleven.push(parseFloat(row[32]));
         }
         // console.log(arrayOne);
         // console.log(arrayTwo);
@@ -280,13 +268,24 @@ fetch(String(this.localStorage.getItem("enlace")) + 'datos.csv')
             }
         });
 
+        console.log(rows[1].split(','));
+
         for (let i = 2; i < 14; i++) {
             const row = rows[i].split(',');
             //rows.length
             //console.log(row);
             arrayThree.push(parseFloat(row[2]));
             arrayFour.push(parseFloat(row[5]));
-            arrayFive.push(parseFloat(row[8]));
+            arraySix.push(parseFloat(row[9]));
+            arraySeven.push(parseFloat(row[12]));
+            arrayEight.push(parseFloat(row[13]));
+        }
+
+        for (let i = 2; i < 26; i++) {
+            const row = rows[i].split(',');
+            //rows.length
+            //console.log(row);
+            arrayFive.push(parseFloat(row[200]));
         }
 
         // range.values.forEach(r => {
@@ -340,6 +339,47 @@ fetch(String(this.localStorage.getItem("enlace")) + 'datos.csv')
             }
         });
 
+        const suma6 = arraySix.reduce((anterior, actual) => anterior + actual, 0);
+        const suma7 = arraySeven.reduce((anterior, actual) => anterior + actual, 0);
+        const suma8 = arrayEight.reduce((anterior, actual) => anterior + actual, 0);
+
+        const suma9 = arrayNine.reduce((anterior, actual) => anterior + actual, 0);
+        const suma10 = arrayTen.reduce((anterior, actual) => anterior + actual, 0);
+        const suma11 = arrayEleven.reduce((anterior, actual) => anterior + actual, 0);
+
+        // console.log(suma6);
+        // console.log(suma7);
+        // console.log(suma8);
+        // console.log(suma9);
+        // console.log(suma10);
+        // console.log(suma11);
+
+        var doughnutChart = new Chart(ctxDoughnut, {
+            type: 'doughnut',
+            data: {
+                labels: ['Retenciones ISR', 'ISR', 'Actualizaciones y recargos ISR', 'Retenciones IVA', 'IVA', 'Actualizaciones y recargos IVA'],
+                datasets: [{
+                    label: 'Dataset 1',
+                    data: [suma6, suma7, suma8, suma9, suma10, suma11],
+                    backgroundColor: [
+                        'red',
+                        'blue',
+                        'yellow',
+                        'green',
+                        'purple',
+                        'orange'
+                    ]
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                responsive: false
+            }
+        });
     })
     .catch(error => {
         console.error('Error al cargar el archivo CSV:', error);

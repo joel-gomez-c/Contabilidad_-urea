@@ -100,8 +100,9 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         // Dividir el archivo CSV en filas
         const rows = data.split('\n');
         let cardExists = false;
+        //console.log(rows);
         // Procesar cada fila (excepto la primera, que contiene los nombres de las columnas)
-        for (let i = 1; i < rows.length; i++) {
+        for (let i = 1; i < (rows.length - 1); i++) {
         const row = rows[i].split(',');
         const nombre = row[0];
         const usuario = row[1];

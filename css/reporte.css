@@ -52,9 +52,27 @@ table {
 }
 
 .background-container {
-    background-image: url('../src/img/premium_photo-1661878589476-bcad7fe1b8c5.jpg');
+    background-image: url('../src/img/summer_banner.jpg');
     background-size: cover;
     background-position: center;
     height: 275px; /* Ajusta la altura según tu imagen */
     position: relative;
+}
+
+#pieChart {
+    display: block;
+    margin: auto;
+}
+
+.info-button {
+    z-index: 10; 
+}
+
+#doughnutChart {
+    display: block;
+    margin: auto;
+}
+
+.row.align-items-center {
+    height: 100%;
 }

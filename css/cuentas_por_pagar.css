@@ -56,9 +56,16 @@ table {
 }
 
 .background-container {
-    background-image: url('../src/img/premium_photo-1661878589476-bcad7fe1b8c5.jpg');
+    background-image: url('../src/img/summer_banner.jpg');
     background-size: cover;
     background-position: center;
     height: 275px; /* Ajusta la altura según tu imagen */
     position: relative;
+}
+
+#chartOne {
+    width: 50% !important; /* Ajusta el tamaño según tus necesidades */
+    height: auto !important;
+    max-width: 300px; /* Limita el tamaño máximo de la gráfica */
+    max-height: 300px; /* Limita el tamaño máximo de la gráfica */
 }
